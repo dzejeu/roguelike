@@ -17,6 +17,9 @@ class MovingDirections(Enum):
     DOWN_RIGHT = Direction(1, 1)
 
 class Character(Entity):
+    """
+    Base class for all the stuff considered as alive (player, enemy etc)
+    """
     def __init__(self, world: World):
         self.world = world
         self.hp: int = 100

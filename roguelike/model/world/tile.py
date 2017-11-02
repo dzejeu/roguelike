@@ -7,9 +7,6 @@ class Tile:
     passable = True
     occupying_class = None
 
-    def __init__(self):
-        self.rect = Rect(*(None for _ in range(4)))
-
     @classmethod
     def on_position(cls, x, y):
         tile = cls()
@@ -17,6 +14,10 @@ class Tile:
         return tile
 
     def occupy(self, occupying_class):
+        """
+        :param occupying_class: this provides info about who/what is standing on a tile
+        :return:
+        """
         self.passable = False
         self.collidable = True
         self.occupying_class = occupying_class
