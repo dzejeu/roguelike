@@ -1,11 +1,9 @@
-from collections import namedtuple
-
-
 class Tile:
     breakable = False
     collidable = False
     passable = True
     occupying_class = None
+    type = "V" #types of tiles V - void, R - room, C - corridor, W - wall, O - obstacle, easily expandable
 
     @classmethod
     def on_position(cls, x, y):
