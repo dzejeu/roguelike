@@ -13,9 +13,10 @@ class TestMeleeEnemy(TestCase):
         player.move(10,10)
         enemy.move(0,0)
 
-        direction = enemy.find_best_direction_to_move(player.occupied_tile)
+        tile = enemy.find_best_tile_to_move(player.occupied_tile)
 
-        self.assertEquals(direction, MovingDirections.DOWN_RIGHT)
+        if tile != (0,1) and tile != (1,0):
+            self.fail()
 
     def test_if_best_move_will_be_chosen_with_obstacle(self):
         world = World(600, 600)
@@ -26,6 +27,5 @@ class TestMeleeEnemy(TestCase):
         player.move(0,10)
         enemy.move(0,0)
 
-        direction = enemy.chase_player(player.occupied_tile)
-
-        self.assertEquals(world.tiles[1][1].occupying_class, EasyMeleeEnemy)
+        enemy.chase_player(player.occupied_tile)
+        self.assertEquals(world.tiles[0][1].occupying_class, EasyMeleeEnemy)

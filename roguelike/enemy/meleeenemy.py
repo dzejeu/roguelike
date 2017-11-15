@@ -2,14 +2,17 @@ from roguelike.enemy import BaseEnemy
 from roguelike.model.world.tile import Tile
 from roguelike.model.character import MovingDirections
 import random
+from math import pow, sqrt
 
 
 class EasyMeleeEnemy(BaseEnemy):
-    def find_best_direction_to_move(self, target_tile):
-        direction_to_move = (target_tile.x - self.occupied_tile.x, target_tile.y - self.occupied_tile.y)
-        direction_to_move = (direction_to_move[0] if direction_to_move[0] == 0 else direction_to_move[0] / abs(direction_to_move[0]),
-                             direction_to_move[1] if direction_to_move[1] == 0 else direction_to_move[1] / abs(direction_to_move[1]))
-        return MovingDirections(direction_to_move)
+    def _get_euclidean_distance(self, x, y, x_target, y_target):
+        return sqrt(pow(float(x - x_target), 2) + pow(float(y - y_target), 2))
+
+    def find_best_tile_to_move(self, target_tile):
+        reachable_tiles = self.get_adjacent_reachable_tiles()
+        return min(reachable_tiles,
+                   key=lambda tile: self._get_euclidean_distance(tile[0], tile[1], target_tile.x, target_tile.y))
 
     def move(self, x, y):
         if self.occupied_tile is not None:
@@ -17,13 +20,5 @@ class EasyMeleeEnemy(BaseEnemy):
         self.occupied_tile = self.world.tiles[x][y].occupy(self.__class__)
 
     def chase_player(self, player_tile):
-        target_direction = self.find_best_direction_to_move(player_tile)
-        available_moves = set(MovingDirections)
-        while available_moves:
-            best_move = min(available_moves, key=lambda var:
-            abs(target_direction.value.x - var.value.x) + abs(target_direction.value.y - var.value.y))
-            if self.world.tiles[self.occupied_tile.x + best_move.value.x][self.occupied_tile.y + best_move.value.y].passable:
-                self.move(self.occupied_tile.x + best_move.value.x, self.occupied_tile.y + best_move.value.y)
-                break
-            else:
-                available_moves.remove(best_move)
+        tile_to_move = self.find_best_tile_to_move(player_tile)
+        self.move(tile_to_move[0], tile_to_move[1])

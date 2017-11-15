@@ -5,20 +5,18 @@ from collections import namedtuple
 
 Direction = namedtuple('Direction', ['x', 'y'])
 
+
 class MovingDirections(Enum):
     DOWN = Direction(0, 1)
     UP = Direction(0, -1)
     LEFT = Direction(-1, 0)
     RIGHT = Direction(1, 0)
-    UP_LEFT = Direction(-1, -1)
-    UP_RIGHT = Direction(1, -1)
-    DOWN_LEFT = Direction(-1, 1)
-    DOWN_RIGHT = Direction(1, 1)
 
 class Character(Entity):
     """
     Base class for all the stuff considered as alive (player, enemy etc)
     """
+
     def __init__(self, world: World):
         self.world = world
         self.hp: int = 100
@@ -35,3 +33,15 @@ class Character(Entity):
 
     def move(self, x, y):
         raise NotImplemented()
+
+    def get_adjacent_reachable_tiles(self):
+        reachable_tiles = []
+        for dir in MovingDirections:
+            new_x = self.occupied_tile.x + dir.value.x
+            new_y = self.occupied_tile.y + dir.value.y
+            if any((new_x, new_y)) < 0 or new_x > self.world.width or new_y > self.world.height:
+                continue
+            else:
+                if self.world.tiles[new_x][new_y].passable:
+                    reachable_tiles.append((new_x, new_y))
+        return reachable_tiles
