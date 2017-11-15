@@ -1,6 +1,6 @@
 import pygame
 
-from model import World
+from roguelike.model.world import World
 
 room_color = (255, 255, 255)
 wall_color = (255, 0, 0)

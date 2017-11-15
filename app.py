@@ -1,7 +1,7 @@
 import os
 import pygame
 
-from controller import inputmap
+from roguelike.controller import inputmap
 from roguelike.view import View
 from roguelike.controller import Controller
 from roguelike.model import World
