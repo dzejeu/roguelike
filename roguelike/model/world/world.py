@@ -1,7 +1,6 @@
 import random
 from typing import List
 
-from roguelike.model.entity import Entity
 from roguelike.model.world.tile import Tile
 
 
@@ -190,12 +189,24 @@ class World:
             for w in range(abs(x1 - x2) + 1):
                 for h in range(abs(y1 - y2) + 1):
                     self.tiles[min(x1, x2) + w][min(y1, y2) + h].type = "C"
+                    if abs(x2 - x1) == 0:
+                        self.tiles[min(x2, x1) + w - 1][min(y2, y1) + h].type = "C"
+                        self.tiles[min(x2, x1) + w + 1][min(y2, y1) + h ].type = "C"
+                    elif abs(y2 - y1) == 0:
+                        self.tiles[min(x2, x1) + w][min(y2, y1) + h -1].type = "C"
+                        self.tiles[min(x2, x1) + w][min(y2, y1) + h +1].type = "C"
 
             if len(c) == 3:
                 x3, y3 = c[2]
                 for w in range(abs(x2 - x3) + 1):
                     for h in range(abs(y2 - y3) + 1):
                         self.tiles[min(x2, x3) + w][min(y2, y3) + h].type = "C"
+                        if abs(x2-x3)==0:
+                            self.tiles[min(x2, x3) + w -1][min(y2, y3) + h].type = "C"
+                            self.tiles[min(x2, x3) + w +1][min(y2, y3) + h].type = "C"
+                        elif abs(y2-y3)==0:
+                            self.tiles[min(x2, x3) + w ][min(y2, y3) + h -1].type = "C"
+                            self.tiles[min(x2, x3) + w][min(y2, y3) + h +1].type = "C"
 
     def gen_walls(self):
         for col in range(1, self.width - 1):
@@ -229,6 +240,19 @@ class World:
         for x in range(r[2] - 1, r[2] + r[0] + 1):
             for y in range(r[3] - 1, r[3] + r[1] + 1):
                 if self.tiles[x][y].type == "C":
+                    if(self.is_corner(r,x,y)):
+                        if self.tiles[x+1][y].type=="V" and self.tiles[x][y+1].type=="V" and self.tiles[x+1][y+1].type=="R":
+                            self.tiles[x+1][y].type = "C"
+                            self.tiles[x][y+1].type = "C"
+                        elif self.tiles[x-1][y].type=="V" and self.tiles[x][y+1].type=="V" and self.tiles[x-1][y+1].type=="R":
+                            self.tiles[x-1][y].type = "C"
+                            self.tiles[x][y+1].type = "C"
+                        elif self.tiles[x-1][y].type=="V" and self.tiles[x][y-1].type=="V" and self.tiles[x-1][y-1].type=="R":
+                            self.tiles[x-1][y].type = "C"
+                            self.tiles[x][y-1].type = "C"
+                        elif self.tiles[x+1][y].type=="V" and self.tiles[x][y-1].type=="V" and self.tiles[x+1][y-1].type=="R":
+                            self.tiles[x+1][y].type = "C"
+                            self.tiles[x][y-1].type = "C"
                     return True
         return False
 
@@ -246,7 +270,21 @@ class World:
                 self.join_rooms(self.room_list[i], r2, 'either')
                 self.is_room_connected[i] = self.check_room_connection(r)
                 if false_count > 10:
-                    break
+                    for i in range(0, len(self.room_list)):
+                        false_count = 0
+                        while self.is_room_connected[i] == False:
+                            false_count = false_count + 1
+                            r2 = self.room_list[random.randint(0, len(self.room_list) - 1)]
+                            self.join_rooms(self.room_list[i], r2, 'either')
+                            self.is_room_connected[i] = self.check_room_connection(r)
+                            if false_count > 10:
+                                for r in self.room_list:
+                                    if r != self.room_list[i]:
+                                        self.join_rooms(self.room_list[i], r, 'either')
+                                        self.is_room_connected[i] = self.check_room_connection(r)
+                                        if self.is_room_connected[i] == True:
+                                            break
+                                break
 
     def repaint_corridors(self):
         for c in self.corridor_list:
@@ -255,12 +293,28 @@ class World:
             for w in range(abs(x1 - x2) + 1):
                 for h in range(abs(y1 - y2) + 1):
                     self.tiles[min(x1, x2) + w][min(y1, y2) + h].type = "C"
+                    if abs(x2 - x1) == 0:
+                        self.tiles[min(x2, x1) + w - 1][min(y2, y1) + h].type = "C"
+                        self.tiles[min(x2, x1) + w + 1][min(y2, y1) + h ].type = "C"
+                    elif abs(y2 - y1) == 0:
+                        self.tiles[min(x2, x1) + w][min(y2, y1) + h -1].type = "C"
+                        self.tiles[min(x2, x1) + w][min(y2, y1) + h +1].type = "C"
 
             if len(c) == 3:
                 x3, y3 = c[2]
                 for w in range(abs(x2 - x3) + 1):
                     for h in range(abs(y2 - y3) + 1):
                         self.tiles[min(x2, x3) + w][min(y2, y3) + h].type = "C"
+                        if abs(x2-x3)==0:
+                            self.tiles[min(x2, x3) + w -1][min(y2, y3) + h].type = "C"
+                            self.tiles[min(x2, x3) + w +1][min(y2, y3) + h].type = "C"
+                        elif abs(y2-y3)==0:
+                            self.tiles[min(x2, x3) + w ][min(y2, y3) + h -1].type = "C"
+                            self.tiles[min(x2, x3) + w][min(y2, y3) + h +1].type = "C"
+
+
+    def is_corner(self, r, x, y):
+        return (x == r[2] - 1 and y == r[3] - 1) or (x == r[2] - 1 and y == r[3] + r[1] + 1) or (x == r[2] + r[0] + 1 and y == r[3] + r[1] + 1) or (x == r[2] + r[0] + 1 and y == r[3] - 1)
 
     def gen_level(self, maxrooms, overlapping, random_connections):
         self.gen_empty_world()
