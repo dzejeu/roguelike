@@ -9,7 +9,7 @@ from roguelike.model import World
 
 def main():
     pygame.init()
-    world_width = 100
+    world_width = 190
     world_height = 100
     input_conf_file = os.path.join(os.path.dirname(__file__), 'input.conf')
 
