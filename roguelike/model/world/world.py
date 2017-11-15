@@ -17,6 +17,7 @@ class World:
         self.corridor_list=[]
         self.tiles: List[List[Tile]] = [[Tile.on_position(h, w) for w in range(width)] for h in range(height)]
         self.entities: List[Entity] = []
+        self.player = None
 
     def gen_empty_world (self):
         for w in range (self.width):

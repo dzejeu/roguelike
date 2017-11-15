@@ -24,6 +24,7 @@ class Tile:
     def leave(self):
         self.passable = True
         self.collidable = False
+        self.occupying_class = None
 
     def set_position(self, new_x, new_y):
         self.x = new_x

@@ -1,5 +1,4 @@
 from roguelike.model.entity import Entity
-from roguelike.model.world.tile import Tile
 from roguelike.model.world.world import World
 from enum import Enum
 from collections import namedtuple
