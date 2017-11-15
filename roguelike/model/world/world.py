@@ -14,6 +14,7 @@ class World:
         self.width=width
         self.height=height
         self.room_list=[]
+        self.is_room_connected=[]
         self.corridor_list=[]
         self.tiles: List[List[Tile]] = [[Tile.on_position(h, w) for w in range(width)] for h in range(height)]
         self.entities: List[Entity] = []
@@ -49,14 +50,16 @@ class World:
 
     def gen_rooms(self, maxrooms, overlapping):
         self.room_list = []
+        self.is_room_connected = []
         if(overlapping==True):
             for i in range (maxrooms):
-                self.room_list.append(self.gen_room(3,3,max(3,self.width/10),max(3,self.height/10)))
+                self.room_list.append(self.gen_room(5,5,max(5,self.width/10),max(5,self.height/10)))
+                self.is_room_connected.append(False)
         else:
             i=0
             count=0
             while (count < 5* maxrooms):
-                room = self.gen_room(3,3,max(3,self.width/10),max(3,self.height/10))
+                room = self.gen_room(5,5,max(5,self.width/10),max(5,self.height/10))
                 ol=False
                 if(i>0):
                     ol = self.is_overlapping(room, self.room_list)
@@ -64,6 +67,7 @@ class World:
                     print(ol)
                 if(ol==False):
                     self.room_list.append(room)
+                    self.is_room_connected.append(False)
                     i=i+1
                 if(i>=maxrooms):
                     break
@@ -113,7 +117,6 @@ class World:
             tmp_y.sort()
             jy1 = tmp_y[1] + 1
             jy2 = tmp_y[2] - 1
-
             corridors = self.gen_corridor_between_points(jx1, jx2, jy1, jy2)
             self.corridor_list.append(corridors)
 
@@ -188,9 +191,10 @@ class World:
                 for h in range(abs(y1 - y2) + 1):
                     self.tiles[min(x1, x2) + w][min(y1, y2) + h].type = "C"
 
+
+
             if len(c) == 3:
                 x3, y3 = c[2]
-
                 for w in range(abs(x2 - x3) + 1):
                     for h in range(abs(y2 - y3) + 1):
                         self.tiles[min(x2, x3) + w][min(y2, y3) + h].type = "C"
@@ -223,12 +227,56 @@ class World:
                     if self.tiles[row + 1][col + 1].type == "V":
                         self.tiles[row + 1][col + 1].type = "W"
 
+    def check_room_connection(self,r):
+        for x in range(r[2] - 1, r[2] + r[0] + 1):
+            for y in range(r[3] - 1, r[3] + r[1] + 1):
+                if self.tiles[x][y].type == "C":
+                    return True
+        return False
+
+    def check_connections(self):
+        i=0
+        for r in self.room_list:
+            self.is_room_connected[i] = self.check_room_connection(r)
+            i=i+1
+
+
+        for i in range(0,len(self.room_list)):
+            false_count=0
+            while self.is_room_connected[i]==False:
+                false_count = false_count + 1
+                r2 = self.room_list[random.randint(0, len(self.room_list) - 1)]
+                self.join_rooms(self.room_list[i],r2,'either')
+                self.is_room_connected[i] = self.check_room_connection(r)
+                if false_count>10:
+                    break
+
+    def repaint_corridors(self):
+        for c in self.corridor_list:
+            x1, y1 = c[0]
+            x2, y2 = c[1]
+            for w in range(abs(x1 - x2) + 1):
+                for h in range(abs(y1 - y2) + 1):
+                    self.tiles[min(x1, x2) + w][min(y1, y2) + h].type = "C"
+
+
+
+            if len(c) == 3:
+                x3, y3 = c[2]
+                for w in range(abs(x2 - x3) + 1):
+                    for h in range(abs(y2 - y3) + 1):
+                        self.tiles[min(x2, x3) + w][min(y2, y3) + h].type = "C"
+
+
+
+
     def gen_level(self, maxrooms, overlapping, random_connections):
         self.gen_empty_world()
         self.gen_rooms(maxrooms,overlapping)
         self.gen_corridors(random_connections)
+        self.check_connections()
+        self.repaint_corridors()
         self.gen_walls()
-
 
 
 
