@@ -11,26 +11,25 @@ class World:
         :param width: amount of tiles in x axis
         :param height: amount of tiles in y axis
         """
-        self.width=width
-        self.height=height
-        self.room_list=[]
-        self.is_room_connected=[]
-        self.corridor_list=[]
-        self.tiles: List[List[Tile]] = [[Tile.on_position(h, w) for w in range(width)] for h in range(height)]
-        self.entities: List[Entity] = []
+        self.width = width
+        self.height = height
+        self.room_list = []
+        self.is_room_connected = []
+        self.corridor_list = []
+        self.tiles: List[List[Tile]] = [[Tile.on_position(w, h) for h in range(height)] for w in range(width)]
 
-    def gen_empty_world (self):
-        for w in range (self.width):
-            for h in range (self.height):
+    def gen_empty_world(self):
+        for w in range(self.width):
+            for h in range(self.height):
                 self.tiles[w][h].type = "V"
 
     def gen_room(self, minroomw, minroomh, maxroomw, maxroomh):
-        roomw = random.randint(minroomw,maxroomw)
+        roomw = random.randint(minroomw, maxroomw)
         roomh = random.randint(minroomh, maxroomh)
-        x = random.randint(1,self.width-roomw-1)
-        y = random.randint(1,self.height-roomh-1)
+        x = random.randint(1, self.width - roomw - 1)
+        y = random.randint(1, self.height - roomh - 1)
 
-        return [roomw,roomh,x,y]
+        return [roomw, roomh, x, y]
 
     def is_overlapping(self, room, room_list):
         x = room[0]
@@ -51,38 +50,39 @@ class World:
     def gen_rooms(self, maxrooms, overlapping):
         self.room_list = []
         self.is_room_connected = []
-        if(overlapping==True):
-            for i in range (maxrooms):
-                self.room_list.append(self.gen_room(5,5,max(5,self.width/10),max(5,self.height/10)))
+        if (overlapping == True):
+            for i in range(maxrooms):
+                self.room_list.append(self.gen_room(5, 5, max(5, self.width / 10), max(5, self.height / 10)))
                 self.is_room_connected.append(False)
         else:
-            i=0
-            count=0
-            while (count < 5* maxrooms):
-                room = self.gen_room(5,5,max(5,self.width/10),max(5,self.height/10))
-                ol=False
-                if(i>0):
+            i = 0
+            count = 0
+            while (count < 5 * maxrooms):
+                room = self.gen_room(5, 5, max(5, self.width / 10), max(5, self.height / 10))
+                ol = False
+                if (i > 0):
                     ol = self.is_overlapping(room, self.room_list)
-                    count=count+1
+                    count = count + 1
                     print(ol)
-                if(ol==False):
+                if (ol == False):
                     self.room_list.append(room)
                     self.is_room_connected.append(False)
-                    i=i+1
-                if(i>=maxrooms):
+                    i = i + 1
+                if (i >= maxrooms):
                     break
         for r in self.room_list:
-            for x in range(r[2],r[2]+r[0]):
-                for y in range(r[3],r[3]+r[1]):
-                    self.tiles[x][y].type="R"
+            for x in range(r[2], r[2] + r[0]):
+                for y in range(r[3], r[3] + r[1]):
+                    self.tiles[x][y].type = "R"
 
-
-    def gen_corridor_between_points(self, x1,x2,y1,y2, join='either'):
-        if  x1 == x2 and y1 == y2 or x1 == x2 or y1 == y2:
+    def gen_corridor_between_points(self, x1, x2, y1, y2, join='either'):
+        if x1 == x2 and y1 == y2 or x1 == x2 or y1 == y2:
             return [(x1, y1), (x2, y2)]
         if join is 'either' and {0, 1}.intersection({x1, x2, y1, y2}):
             join_type = 'bottom'
-        elif join is 'either' and {self.width - 1, self.width - 2}.intersection({x1, x2}) or {self.height - 1, self.height - 2}.intersection({y1, y2}):
+        elif join is 'either' and {self.width - 1, self.width - 2}.intersection({x1, x2}) or {self.height - 1,
+                                                                                              self.height - 2}.intersection(
+                {y1, y2}):
             join_type = 'top'
         elif join is 'either':
             join_type = random.choice(['top', 'bottom'])
@@ -93,7 +93,7 @@ class World:
         elif join_type is 'bottom':
             return [(x1, y1), (x2, y1), (x2, y2)]
 
-    def join_rooms(self,room1,room2,join='either'):
+    def join_rooms(self, room1, room2, join='either'):
         sorted_rooms = [room1, room2]
         sorted_rooms.sort(key=lambda x_y: x_y[0])
 
@@ -176,7 +176,7 @@ class World:
     def gen_corridors(self, random_connections):
         self.corridor_list = []
 
-        for i in range(len(self.room_list)-1):
+        for i in range(len(self.room_list) - 1):
             self.join_rooms(self.room_list[i], self.room_list[i + 1])
 
         for i in range(random_connections):
@@ -191,8 +191,6 @@ class World:
                 for h in range(abs(y1 - y2) + 1):
                     self.tiles[min(x1, x2) + w][min(y1, y2) + h].type = "C"
 
-
-
             if len(c) == 3:
                 x3, y3 = c[2]
                 for w in range(abs(x2 - x3) + 1):
@@ -200,34 +198,34 @@ class World:
                         self.tiles[min(x2, x3) + w][min(y2, y3) + h].type = "C"
 
     def gen_walls(self):
-        for row in range(1, self.height - 1):
-            for col in range(1, self.width - 1):
-                if self.tiles[row][col].type == "R" or self.tiles[row][col].type == "C":
-                    if self.tiles[row - 1][col - 1].type == "V":
-                        self.tiles[row - 1][col - 1].type = "W"
+        for col in range(1, self.width - 1):
+            for row in range(1, self.height - 1):
+                if self.tiles[col][row].type == "R" or self.tiles[col][row].type == "C":
+                    if self.tiles[col - 1][row - 1].type == "V":
+                        self.tiles[col - 1][row - 1].type = "W"
 
-                    if self.tiles[row - 1][col].type == "V":
-                        self.tiles[row - 1][col].type = "W"
+                    if self.tiles[col - 1][row].type == "V":
+                        self.tiles[col - 1][row].type = "W"
 
-                    if self.tiles[row - 1][col + 1].type == "V":
-                        self.tiles[row - 1][col + 1].type = "W"
+                    if self.tiles[col - 1][row + 1].type == "V":
+                        self.tiles[col - 1][row + 1].type = "W"
 
-                    if self.tiles[row][col - 1].type == "V":
-                        self.tiles[row][col - 1].type = "W"
+                    if self.tiles[col][row - 1].type == "V":
+                        self.tiles[col][row - 1].type = "W"
 
-                    if self.tiles[row][col + 1].type == "V":
-                        self.tiles[row][col + 1].type = "W"
+                    if self.tiles[col][row + 1].type == "V":
+                        self.tiles[col][row + 1].type = "W"
 
-                    if self.tiles[row + 1][col - 1].type == "V":
-                        self.tiles[row + 1][col - 1].type = "W"
+                    if self.tiles[col + 1][row - 1].type == "V":
+                        self.tiles[col + 1][row - 1].type = "W"
 
-                    if self.tiles[row + 1][col].type == "V":
-                        self.tiles[row + 1][col].type = "W"
+                    if self.tiles[col + 1][row].type == "V":
+                        self.tiles[col + 1][row].type = "W"
 
-                    if self.tiles[row + 1][col + 1].type == "V":
-                        self.tiles[row + 1][col + 1].type = "W"
+                    if self.tiles[col + 1][row + 1].type == "V":
+                        self.tiles[col + 1][row + 1].type = "W"
 
-    def check_room_connection(self,r):
+    def check_room_connection(self, r):
         for x in range(r[2] - 1, r[2] + r[0] + 1):
             for y in range(r[3] - 1, r[3] + r[1] + 1):
                 if self.tiles[x][y].type == "C":
@@ -235,20 +233,19 @@ class World:
         return False
 
     def check_connections(self):
-        i=0
+        i = 0
         for r in self.room_list:
             self.is_room_connected[i] = self.check_room_connection(r)
-            i=i+1
+            i = i + 1
 
-
-        for i in range(0,len(self.room_list)):
-            false_count=0
-            while self.is_room_connected[i]==False:
+        for i in range(0, len(self.room_list)):
+            false_count = 0
+            while self.is_room_connected[i] == False:
                 false_count = false_count + 1
                 r2 = self.room_list[random.randint(0, len(self.room_list) - 1)]
-                self.join_rooms(self.room_list[i],r2,'either')
+                self.join_rooms(self.room_list[i], r2, 'either')
                 self.is_room_connected[i] = self.check_room_connection(r)
-                if false_count>10:
+                if false_count > 10:
                     break
 
     def repaint_corridors(self):
@@ -259,24 +256,16 @@ class World:
                 for h in range(abs(y1 - y2) + 1):
                     self.tiles[min(x1, x2) + w][min(y1, y2) + h].type = "C"
 
-
-
             if len(c) == 3:
                 x3, y3 = c[2]
                 for w in range(abs(x2 - x3) + 1):
                     for h in range(abs(y2 - y3) + 1):
                         self.tiles[min(x2, x3) + w][min(y2, y3) + h].type = "C"
 
-
-
-
     def gen_level(self, maxrooms, overlapping, random_connections):
         self.gen_empty_world()
-        self.gen_rooms(maxrooms,overlapping)
+        self.gen_rooms(maxrooms, overlapping)
         self.gen_corridors(random_connections)
         self.check_connections()
         self.repaint_corridors()
         self.gen_walls()
-
-
-
