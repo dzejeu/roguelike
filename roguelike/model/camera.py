@@ -32,7 +32,7 @@ class Camera():
         :param player_direction: position of the player on the map. pygame.Rect()
         :return: calc the state of the camera, so that the player is in the center of the screen
         """
-        l, t, _, _ = player_position
+        l, t = player_position
         _, _, w, h = self.state
         l, t, _, _ = -l + self.screen_width / 2, -t + self.screen_height / 2, w, h  # center player
 
