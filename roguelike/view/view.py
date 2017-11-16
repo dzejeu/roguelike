@@ -1,9 +1,13 @@
 import pygame
 
+from roguelike.enemy.meleeenemy import EasyMeleeEnemy
+from roguelike.model.player import Player
 from roguelike.model.world import World
 
 room_color = (255, 255, 255)
 wall_color = (255, 0, 0)
+player_color = (0, 0, 255)
+enemy_color = (0, 255, 0)
 
 
 class View:
@@ -19,11 +23,18 @@ class View:
 
         for i in range(self.world.width):
             for j in range(self.world.height):
-                tile = (i*8,j*8,8,8)
+                tile = (i * 8, j * 8, 8, 8)
+                # draw background
                 if self.world.tiles[i][j].type == "R":
                     self.main_surface.fill(room_color, tile)
-                if self.world.tiles[i][j].type == "W":
+                elif self.world.tiles[i][j].type == "W":
                     self.main_surface.fill(wall_color, tile)
-                if self.world.tiles[i][j].type == "C":
+                elif self.world.tiles[i][j].type == "C":
                     self.main_surface.fill(room_color, tile)
-        pygame.display.flip()
+                # draw characters
+                if self.world.tiles[i][j].occupying_class == Player:
+                    self.main_surface.fill(player_color, tile)
+                if self.world.tiles[i][j].occupying_class == EasyMeleeEnemy:
+                    self.main_surface.fill(enemy_color, tile)
+
+        pygame.display.update()

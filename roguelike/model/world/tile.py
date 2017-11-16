@@ -5,6 +5,9 @@ class Tile:
     occupying_class = None
     type = "V" #types of tiles V - void, R - room, C - corridor, W - wall, O - obstacle, easily expandable
 
+    def __init__(self):
+        self.occupying_class = None
+
     @classmethod
     def on_position(cls, x, y):
         tile = cls()
@@ -24,6 +27,7 @@ class Tile:
     def leave(self):
         self.passable = True
         self.collidable = False
+        self.occupying_class = None
 
     def set_position(self, new_x, new_y):
         self.x = new_x
