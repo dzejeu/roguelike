@@ -15,10 +15,11 @@ def main():
     world_height = 100
     input_conf_file = os.path.join(os.path.dirname(__file__), 'input.conf')
 
+    pygame.key.set_repeat(1, 100)
     world = World(world_width, world_height)
     world.gen_level(10, True, 2)
     chase_enemy = pygame.USEREVENT + 1
-    pygame.time.set_timer(chase_enemy, 600)
+    pygame.time.set_timer(chase_enemy, 300)
     view = View(world)
     player = Player(world)
     controller = Controller(player, view)
@@ -29,7 +30,7 @@ def main():
 
     player.spawn_random()
 
-    for enemy in range(3):
+    for enemy in range(15):
         easy_enemy = EasyMeleeEnemy(world)
         easy_enemy.spawn_random()
         enemies.append(easy_enemy)
@@ -45,7 +46,7 @@ def main():
                 for enemy in enemies:
                     enemy.chase_player(player.occupied_tile)
             controller.update_view()
-            pygame.time.wait(30)
+            pygame.time.wait(20)
     pygame.quit()
 
 
