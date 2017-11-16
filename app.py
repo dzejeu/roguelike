@@ -11,8 +11,12 @@ from roguelike.model.player import Player
 
 def main():
     pygame.init()
-    world_width = 190
+    world_width = 300
     world_height = 100
+
+    screen_width = 800
+    screen_height = 600
+
     input_conf_file = os.path.join(os.path.dirname(__file__), 'input.conf')
 
     pygame.key.set_repeat(1, 100)
@@ -20,7 +24,7 @@ def main():
     world.gen_level(10, True, 2)
     chase_enemy = pygame.USEREVENT + 1
     pygame.time.set_timer(chase_enemy, 300)
-    view = View(world)
+    view = View(world, screen_width, screen_height)
     player = Player(world)
     controller = Controller(player, view)
     enemies = []
@@ -45,7 +49,7 @@ def main():
             if event.type == chase_enemy:
                 for enemy in enemies:
                     enemy.chase_player(player.occupied_tile)
-            controller.update_view()
+            controller.update_view((player.occupied_tile.x, player.occupied_tile.y))
             pygame.time.wait(20)
     pygame.quit()
 

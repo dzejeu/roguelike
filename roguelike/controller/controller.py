@@ -39,5 +39,5 @@ class Controller:
             self.player.move(self.player.occupied_tile.x + direction.x,
                                    self.player.occupied_tile.y + direction.y)
 
-    def update_view(self):
-        self.view.draw()
+    def update_view(self, player_position):
+        self.view.draw(player_position)

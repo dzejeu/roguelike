@@ -2,7 +2,7 @@
 import pygame
 
 class Camera():
-    def __init__(self, map_width, map_height, screen_width, screen_height):
+    def __init__(self, map_width, map_height, screen_width, screen_height, tile_size):
         """
         Class for camera scrolling.
         :param map_width: size the map in pixel
@@ -11,13 +11,17 @@ class Camera():
         self.state = pygame.Rect(0, 0, map_width, map_height)
         self.screen_width = screen_width
         self.screen_height = screen_height
+        self.tile_size = tile_size
 
     def update(self, player_position):
         """
         :param player: player object
         Update camera's state to follow player.
         """
-        self.state = self.calc_camera(player_position)
+        x,y = player_position
+        x*= self.tile_size
+        y*= self.tile_size
+        self.state = self.calc_camera((x,y))
 
     def apply(self):
         """
