@@ -5,7 +5,7 @@
 
 # key   command
 ESCAPE  quit
-w       move_up
-a       move_left
-s       move_down
-d       move_right
+UP      move_up
+LEFT    move_left
+DOWN    move_down
+RIGHT   move_right

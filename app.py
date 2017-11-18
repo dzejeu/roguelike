@@ -1,5 +1,6 @@
 import os
 import pygame
+from shutil import copyfile
 
 from roguelike.controller import inputmap
 from roguelike.enemy.meleeenemy import EasyMeleeEnemy
@@ -18,6 +19,8 @@ def main():
     screen_height = 600
 
     input_conf_file = os.path.join(os.path.dirname(__file__), 'input.conf')
+    if not os.path.exists(input_conf_file):
+        copyfile(input_conf_file + ".default", input_conf_file)
 
     pygame.key.set_repeat(1, 100)
     world = World(world_width, world_height)
