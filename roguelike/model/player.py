@@ -5,19 +5,11 @@ class Player(Character):
     def __init__(self, world: World):
         super().__init__(world)
 
-    def spawn_random(self):
-        #todo: refactor this ugly shiet
-        found = False
-        for h in range(self.world.height):
-            for w in range(self.world.width):
-                if self.world.tiles[w][h].type == "R" and self.world.tiles[w][h].occupying_class is None:
-                    self.move(w, h)
-                    found = True
-                    break
-            else:
-                continue
-            if found:
-                break
+    def spawn(self):
+        spawn_room = self.world.room_list[0]
+        spawn_x = int(spawn_room[2]+spawn_room[0]/2)
+        spawn_y = int(spawn_room[3]+spawn_room[1]/2)
+        self.move(spawn_x,spawn_y)
 
     def move(self, x, y):
         if self.world.tiles[x][y].type == "R" or self.world.tiles[x][y].type == "C":

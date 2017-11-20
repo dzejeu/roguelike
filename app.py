@@ -1,13 +1,14 @@
 import os
-import pygame
 from shutil import copyfile
 
+import pygame
+
+from roguelike.controller import Controller
 from roguelike.controller import inputmap
 from roguelike.enemy.meleeenemy import EasyMeleeEnemy
-from roguelike.view import View
-from roguelike.controller import Controller
 from roguelike.model import World
 from roguelike.model.player import Player
+from roguelike.view import View
 
 
 def main():
@@ -35,7 +36,7 @@ def main():
     with open(input_conf_file, 'r') as f:
         controller.input_map = inputmap.load(f)
 
-    player.spawn_random()
+    player.spawn()
 
     for enemy in range(15):
         easy_enemy = EasyMeleeEnemy(world)
