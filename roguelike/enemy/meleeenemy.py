@@ -1,9 +1,7 @@
-from roguelike.enemy import BaseEnemy
-from roguelike.model.world.tile import Tile
-from roguelike.model.character import MovingDirections
-import random
 from math import pow, sqrt
-import asyncio
+
+from roguelike.enemy import BaseEnemy
+
 
 class EasyMeleeEnemy(BaseEnemy):
     def _get_euclidean_distance(self, x, y, x_target, y_target):
@@ -11,8 +9,11 @@ class EasyMeleeEnemy(BaseEnemy):
 
     def find_best_tile_to_move(self, target_tile):
         reachable_tiles = self.get_adjacent_reachable_tiles()
-        return min(reachable_tiles,
-                   key=lambda tile: self._get_euclidean_distance(tile[0], tile[1], target_tile.x, target_tile.y))
+        if reachable_tiles:
+            return min(reachable_tiles,
+                       key=lambda tile: self._get_euclidean_distance(tile[0], tile[1], target_tile.x, target_tile.y))
+        else:
+            return self.occupied_tile.x, self.occupied_tile.y
 
     def move(self, x, y):
         if self.world.tiles[x][y].type == "R" or self.world.tiles[x][y].type == "C":
@@ -23,4 +24,4 @@ class EasyMeleeEnemy(BaseEnemy):
 
     def chase_player(self, player_tile):
         (x, y) = self.find_best_tile_to_move(player_tile)
-        self.move(x,y)
+        self.move(x, y)

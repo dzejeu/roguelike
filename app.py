@@ -24,10 +24,15 @@ def main():
         copyfile(input_conf_file + ".default", input_conf_file)
 
     pygame.key.set_repeat(1, 100)
-    world = World(world_width, world_height)
-    world.gen_level(10, True, 2)
     chase_enemy = pygame.USEREVENT + 1
     pygame.time.set_timer(chase_enemy, 300)
+    # set_allowed(None) blokuje wszystkie i jest niezbedne zeby pozniej uaktywnic tylko niektore
+    # pygame -.-
+    pygame.event.set_allowed(None)
+    pygame.event.set_allowed([pygame.QUIT, pygame.KEYDOWN, chase_enemy])
+
+    world = World(world_width, world_height)
+    world.gen_level(10, True, 2)
     view = View(world, screen_width, screen_height)
     player = Player(world)
     controller = Controller(player, view)
