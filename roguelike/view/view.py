@@ -1,9 +1,9 @@
 import pygame
 
 from roguelike.enemy.meleeenemy import EasyMeleeEnemy
+from roguelike.model.camera import Camera
 from roguelike.model.player import Player
 from roguelike.model.world import World
-from roguelike.model.camera import Camera
 from .assets import Assets
 
 room_color = (255, 255, 255)
@@ -17,13 +17,13 @@ class View:
     def __init__(self, world: World, screen_width:int, screen_height:int):
         self.world: World = world
 
-        screen_width = screen_width
-        screen_height = screen_height
+        self.screen_width = screen_width
+        self.screen_height = screen_height
 
         surface_width = tile_size * world.width
         surface_height = tile_size * world.height
 
-        self.main_surface = pygame.display.set_mode((screen_width, screen_height))
+        self.main_surface = pygame.display.set_mode((screen_width, screen_height),pygame.FULLSCREEN)
         self.camera = Camera(surface_width, surface_height, screen_width, screen_height, tile_size)
 
     def draw(self, player_position):
