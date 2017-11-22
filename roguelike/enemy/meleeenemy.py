@@ -45,9 +45,11 @@ class BoundedEnemy(BaseEnemy):
         return self._spawning_tile
 
     def chase_player(self, player_tile):
-        if self.get_distance(self.spawning_tile, self.occupied_tile) > (self.world.width / 10):
+        if self.get_distance(self.spawning_tile, self.occupied_tile) > 20:
             tile_to_move = self.find_best_tile_to_move(self.spawning_tile)
-        else:
+        elif self.get_distance(self.occupied_tile, player_tile) < 20:
             tile_to_move = self.find_best_tile_to_move(player_tile)
+        else:
+            tile_to_move = self.occupied_tile
         self.move(tile_to_move.x, tile_to_move.y)
 

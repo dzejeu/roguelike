@@ -13,7 +13,6 @@ def get_adjacent_reachable_tiles(current, world):
         if any((new_x, new_y)) < 0 or new_x >= world.width or new_y >= world.height:
             continue
         else:
-            # todo: przy budowaniu scian oznaczac je jak unpassable - refactor
             if world.tiles[new_x][new_y].passable and (
                             world.tiles[new_x][new_y].type == "R" or world.tiles[new_x][new_y].type == "C"):
                 reachable_tiles.append(world.tiles[new_x][new_y])
@@ -36,7 +35,7 @@ def A_star_pathfinding(start_tile, end_tile, world):
     open_set = {start_tile}
     came_from = {}
     gScore = {tile: math.inf for tile in world_map}
-    fScore = {tile: math.inf for tile in world_map}
+    fScore = gScore.copy()
     gScore[start_tile] = 0
     fScore[start_tile] = heuristic_cost_estimate(start_tile, end_tile)
 
