@@ -1,13 +1,13 @@
 import math
 
-from roguelike.model.character import MovingDirections
+from roguelike.model import character
 
 class PathNotFound(Exception):
     pass
 
 def get_adjacent_reachable_tiles(current, world):
     reachable_tiles = []
-    for dir in MovingDirections:
+    for dir in character.MovingDirections:
         new_x = current.x + dir.value.x
         new_y = current.y + dir.value.y
         if any((new_x, new_y)) < 0 or new_x >= world.width or new_y >= world.height:

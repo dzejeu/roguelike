@@ -2,6 +2,7 @@ import random
 from typing import List
 
 from roguelike.model.world.tile import Tile
+from roguelike.utils import pathfinding
 
 
 class World:
@@ -317,10 +318,30 @@ class World:
     def is_corner(self, r, x, y):
         return (x == r[2] - 1 and y == r[3] - 1) or (x == r[2] - 1 and y == r[3] + r[1] + 1) or (x == r[2] + r[0] + 1 and y == r[3] + r[1] + 1) or (x == r[2] + r[0] + 1 and y == r[3] - 1)
 
+    def check_for_modules(self):
+        is_connected = [[False for i in range(len(self.room_list)-1)] for j in range(len(self.room_list)-1)]
+        for i in range (0, len(self.room_list)-1):
+            for j in range (i,len(self.room_list)-1):
+                try:
+                    r1=self.room_list[i]
+                    r2=self.room_list[j]
+                    for k in range (0,i-1):
+                        if is_connected[k][i]==True and is_connected[k][j]==True:
+                            is_connected[i][j]=True
+                    if is_connected[i][j] == False:
+                        pathfinding.A_star_pathfinding(self.tiles[r1[2]][r1[3]],self.tiles[r2[2]][r2[3]],self)
+                        is_connected[i][j]=True
+                except pathfinding.PathNotFound as e:
+                    self.join_rooms(self.room_list[i], self.room_list[j], 'either')
+                    is_connected[i][j]=True
+                    pass
+
     def gen_level(self, maxrooms, overlapping, random_connections):
         self.gen_empty_world()
         self.gen_rooms(maxrooms, overlapping)
         self.gen_corridors(random_connections)
         self.check_connections()
+        self.repaint_corridors()
+        self.check_for_modules()
         self.repaint_corridors()
         self.gen_walls()
