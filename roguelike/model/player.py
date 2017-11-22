@@ -16,5 +16,5 @@ class Player(Character):
             if self.world.tiles[x][y].passable:
                 if self.occupied_tile is not None:
                     self.occupied_tile.leave()
-                self.occupied_tile = self.world.tiles[x][y].occupy(self.__class__)
+                self.occupied_tile = self.world.tiles[x][y].occupy(self)
 

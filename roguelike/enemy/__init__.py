@@ -9,6 +9,6 @@ class BaseEnemy(Character):
 
     def spawn_random(self):
         all_tiles = [self.world.tiles[w][h] for w in range(self.world.width) for h in range(self.world.height)]
-        available_tiles = list(filter(lambda x: x.occupying_class is None and x.type=='R', all_tiles))
+        available_tiles = list(filter(lambda x: x.occupied_by is None and x.type=='R', all_tiles))
         [random_tile]= random.sample(available_tiles, 1)
         self.move(random_tile.x, random_tile.y)

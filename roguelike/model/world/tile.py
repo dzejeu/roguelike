@@ -2,11 +2,11 @@ class Tile:
     breakable = False
     collidable = False
     passable = True
-    occupying_class = None
+    occupied_by = None
     type = "V" #types of tiles V - void, R - room, C - corridor, W - wall, O - obstacle, easily expandable
 
     def __init__(self):
-        self.occupying_class = None
+        self.occupied_by = None
 
     @classmethod
     def on_position(cls, x, y, default_type='V'):
@@ -15,20 +15,20 @@ class Tile:
         tile.type = default_type
         return tile
 
-    def occupy(self, occupying_class):
+    def occupy(self, occupied_by):
         """
-        :param occupying_class: this provides info about who/what is standing on a tile
+        :param occupied_by: this provides info about who/what is standing on a tile
         :return:
         """
         self.passable = False
         self.collidable = True
-        self.occupying_class = occupying_class
+        self.occupied_by = occupied_by
         return self
 
     def leave(self):
         self.passable = True
         self.collidable = False
-        self.occupying_class = None
+        self.occupied_by = None
 
     def set_position(self, new_x, new_y):
         self.x = new_x

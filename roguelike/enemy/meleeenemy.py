@@ -21,7 +21,7 @@ class DumbMeleeEnemy(BaseEnemy):
             if self.world.tiles[x][y].passable:
                 if self.occupied_tile is not None:
                     self.occupied_tile.leave()
-                self.occupied_tile = self.world.tiles[x][y].occupy(self.__class__)
+                self.occupied_tile = self.world.tiles[x][y].occupy(self)
 
     def chase_player(self, player_tile):
         best_tile = self.find_best_tile_to_move(player_tile)

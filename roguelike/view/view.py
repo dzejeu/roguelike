@@ -32,9 +32,13 @@ class View:
 
         x_offset, y_offset = self.camera.apply()
 
-        for i in range(self.world.width):
-            for j in range(self.world.height):
-                tile = ((i * tile_size)+x_offset , (j * tile_size)+y_offset)
+        start_i = -self.camera.state.left // tile_size
+        start_j = -self.camera.state.top // tile_size
+        end_i = min(self.world.width, start_i + self.screen_width // tile_size + 1)
+        end_j = min(self.world.height, start_j + self.screen_height // tile_size + 2)
+
+        for i in range(start_i, end_i):
+            for j in range(start_j, end_j):
                 tile_asset = None
 
                 # draw background
@@ -46,12 +50,15 @@ class View:
                     tile_asset = Assets.CORRIDOR
 
                 if tile_asset is not None:
+                    tile = ((i * tile_size)+x_offset , (j * tile_size)+y_offset)
                     tile_asset.draw(self.main_surface, tile)
 
-                # draw characters
-                if self.world.tiles[i][j].occupying_class == DumbMeleeEnemy:
-                    Assets.ENEMY.draw(self.main_surface, tile)
-                if self.world.tiles[i][j].occupying_class == Player:
-                    Assets.PLAYER.draw(self.main_surface, tile)
+                    # there should not be any characters in void
+                    # draw characters
+                    if self.world.tiles[i][j].occupied_by is not None:
+                        if self.world.tiles[i][j].occupied_by.__class__ == DumbMeleeEnemy:
+                            Assets.ENEMY.draw(self.main_surface, tile)
+                        if self.world.tiles[i][j].occupied_by.__class__ == Player:
+                            Assets.PLAYER.draw(self.main_surface, tile)
 
         pygame.display.update()
