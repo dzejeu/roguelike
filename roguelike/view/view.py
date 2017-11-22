@@ -56,9 +56,9 @@ class View:
                     # there should not be any characters in void
                     # draw characters
                     if self.world.tiles[i][j].occupied_by is not None:
-                        if self.world.tiles[i][j].occupying_class == DumbMeleeEnemy:
+                        if self.world.tiles[i][j].occupied_by.__class__ == DumbMeleeEnemy:
                             Assets.DUMB_ENEMY.draw(self.main_surface, tile)
-                        if self.world.tiles[i][j].occupying_class == Player:
+                        if self.world.tiles[i][j].occupied_by.__class__ == Player:
                             Assets.PLAYER.draw(self.main_surface, tile)
 
         pygame.display.update()
