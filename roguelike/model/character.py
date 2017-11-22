@@ -22,6 +22,7 @@ class Character(Entity):
     def __init__(self, world: World):
         self.world = world
         self.hp: int = 100
+        self.max_hp: int = 100
         self.base_defense: int = 10
         self.base_attack: int = 10
         self.looking_direction = MovingDirections.UP

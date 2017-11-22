@@ -33,8 +33,8 @@ def main():
 
     world = World(world_width, world_height)
     world.gen_level(10, True, 2)
-    view = View(world, screen_width, screen_height)
     player = Player(world)
+    view = View(world, screen_width, screen_height, player)
     controller = Controller(player, view)
     enemies = []
 
@@ -58,7 +58,7 @@ def main():
             if event.type == chase_enemy:
                 for enemy in enemies:
                     enemy.chase_player(player.occupied_tile)
-            controller.update_view((player.occupied_tile.x, player.occupied_tile.y))
+            controller.update_view()
             pygame.time.wait(20)
     pygame.quit()
 

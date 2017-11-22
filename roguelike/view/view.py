@@ -4,6 +4,7 @@ from roguelike.enemy.meleeenemy import DumbMeleeEnemy
 from roguelike.model.camera import Camera
 from roguelike.model.player import Player
 from roguelike.model.world import World
+from roguelike.view.hud import Hud
 from .assets import Assets
 
 room_color = (255, 255, 255)
@@ -14,7 +15,7 @@ enemy_color = (0, 255, 0)
 tile_size = Assets.BASE_ASSET_SIZE
 
 class View:
-    def __init__(self, world: World, screen_width:int, screen_height:int):
+    def __init__(self, world: World, screen_width:int, screen_height:int, player):
         self.world: World = world
 
         self.screen_width = screen_width
@@ -23,10 +24,12 @@ class View:
         surface_width = tile_size * world.width
         surface_height = tile_size * world.height
 
-        self.main_surface = pygame.display.set_mode((screen_width, screen_height),pygame.FULLSCREEN)
+        self.main_surface = pygame.display.set_mode((screen_width, screen_height))
         self.camera = Camera(surface_width, surface_height, screen_width, screen_height, tile_size)
+        self.hud = Hud(self.main_surface, player)
 
-    def draw(self, player_position):
+    def draw(self, player):
+        player_position = (player.occupied_tile.x, player.occupied_tile.y)
         self.main_surface.fill((0, 0, 0))
         self.camera.update(player_position)
 
@@ -58,7 +61,9 @@ class View:
                     if self.world.tiles[i][j].occupied_by is not None:
                         if self.world.tiles[i][j].occupied_by.__class__ == DumbMeleeEnemy:
                             Assets.DUMB_ENEMY.draw(self.main_surface, tile)
+                            self.hud.draw_character(self.world.tiles[i][j].occupied_by, tile)
                         if self.world.tiles[i][j].occupied_by.__class__ == Player:
                             Assets.PLAYER.draw(self.main_surface, tile)
 
+        self.hud.draw()
         pygame.display.update()
