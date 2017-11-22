@@ -25,7 +25,7 @@ def main():
 
     pygame.key.set_repeat(1, 100)
     chase_enemy = pygame.USEREVENT + 1
-    pygame.time.set_timer(chase_enemy, 300)
+    pygame.time.set_timer(chase_enemy, 500)
     # set_allowed(None) blokuje wszystkie i jest niezbedne zeby pozniej uaktywnic tylko niektore
     # pygame -.-
     pygame.event.set_allowed(None)

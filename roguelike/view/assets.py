@@ -32,7 +32,7 @@ class Asset:
 class Assets:
     BASE_ASSET_SIZE = BASE_ASSET_SIZE
     PLAYER = Asset(pygame.image.load("assets/player_right.png"), (32, 42), (0, -10), alpha=True)
+    DUMB_ENEMY = Asset(pygame.image.load("assets/ghost.png"), alpha=True)
     ROOM = Asset(pygame.image.load("assets/room.png"))
     CORRIDOR = Asset(pygame.image.load("assets/room.png"))
     WALL = Asset(create_solid_surface((BASE_ASSET_SIZE, BASE_ASSET_SIZE), (63, 66, 76)))
-    ENEMY = Asset(create_solid_surface((BASE_ASSET_SIZE, BASE_ASSET_SIZE), (0, 255, 0)))
