@@ -1,6 +1,6 @@
 import pygame
 
-from roguelike.enemy.meleeenemy import EasyMeleeEnemy
+from roguelike.enemy.meleeenemy import DumbMeleeEnemy
 from roguelike.model.camera import Camera
 from roguelike.model.player import Player
 from roguelike.model.world import World
@@ -49,7 +49,7 @@ class View:
                     tile_asset.draw(self.main_surface, tile)
 
                 # draw characters
-                if self.world.tiles[i][j].occupying_class == EasyMeleeEnemy:
+                if self.world.tiles[i][j].occupying_class == DumbMeleeEnemy:
                     Assets.ENEMY.draw(self.main_surface, tile)
                 if self.world.tiles[i][j].occupying_class == Player:
                     Assets.PLAYER.draw(self.main_surface, tile)

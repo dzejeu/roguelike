@@ -5,7 +5,7 @@ from roguelike.model.world.tile import Tile
 
 
 class World:
-    def __init__(self, width, height):
+    def __init__(self, width, height, default_tile_type='V'):
         """
         :param width: amount of tiles in x axis
         :param height: amount of tiles in y axis
@@ -15,7 +15,8 @@ class World:
         self.room_list = []
         self.is_room_connected = []
         self.corridor_list = []
-        self.tiles: List[List[Tile]] = [[Tile.on_position(w, h) for h in range(height)] for w in range(width)]
+        self.tiles: List[List[Tile]] = [[Tile.on_position(w, h, default_type=default_tile_type)
+                                         for h in range(height)] for w in range(width)]
 
     def gen_empty_world(self):
         for w in range(self.width):

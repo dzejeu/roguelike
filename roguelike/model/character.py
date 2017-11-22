@@ -35,17 +35,3 @@ class Character(Entity):
 
     def move(self, x, y):
         raise NotImplemented()
-
-    def get_adjacent_reachable_tiles(self):
-        reachable_tiles = []
-        for dir in MovingDirections:
-            new_x = self.occupied_tile.x + dir.value.x
-            new_y = self.occupied_tile.y + dir.value.y
-            if any((new_x, new_y)) < 0 or new_x > self.world.width or new_y > self.world.height:
-                continue
-            else:
-                #todo: przy budowaniu scian oznaczac je jak unpassable - refactor
-                if self.world.tiles[new_x][new_y].passable and (
-                        self.world.tiles[new_x][new_y].type == "R" or self.world.tiles[new_x][new_y].type == "C"):
-                    reachable_tiles.append((new_x, new_y))
-        return reachable_tiles

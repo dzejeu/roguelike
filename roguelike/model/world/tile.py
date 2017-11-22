@@ -9,9 +9,10 @@ class Tile:
         self.occupying_class = None
 
     @classmethod
-    def on_position(cls, x, y):
+    def on_position(cls, x, y, default_type='V'):
         tile = cls()
         tile.set_position(x, y)
+        tile.type = default_type
         return tile
 
     def occupy(self, occupying_class):
@@ -39,3 +40,5 @@ class Tile:
     def __eq__(self, other):
         return self.x == other.x and self.y == other.y
 
+    def __hash__(self):
+        return hash(str(self.x) + str(self.y))

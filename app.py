@@ -5,7 +5,7 @@ import pygame
 
 from roguelike.controller import Controller
 from roguelike.controller import inputmap
-from roguelike.enemy.meleeenemy import EasyMeleeEnemy
+from roguelike.enemy.meleeenemy import DumbMeleeEnemy
 from roguelike.model import World
 from roguelike.model.player import Player
 from roguelike.view import View
@@ -44,7 +44,7 @@ def main():
     player.spawn()
 
     for enemy in range(15):
-        easy_enemy = EasyMeleeEnemy(world)
+        easy_enemy = DumbMeleeEnemy(world)
         easy_enemy.spawn_random()
         enemies.append(easy_enemy)
 
