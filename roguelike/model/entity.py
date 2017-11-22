@@ -1,4 +1,4 @@
-class Entity:
+class Entity(object):
     def on_collision(self, other: 'Entity'):
         pass
 

@@ -1,6 +1,6 @@
 import pygame
 
-from roguelike.enemy.meleeenemy import DumbMeleeEnemy
+from roguelike.enemy.meleeenemy import DumbMeleeEnemy, BoundedEnemy
 from roguelike.model.camera import Camera
 from roguelike.model.player import Player
 from roguelike.model.world import World
@@ -64,6 +64,8 @@ class View:
                             self.hud.draw_character(self.world.tiles[i][j].occupied_by, tile)
                         if self.world.tiles[i][j].occupied_by.__class__ == Player:
                             Assets.PLAYER.draw(self.main_surface, tile)
+                        if self.world.tiles[i][j].occupied_by.__class__ == BoundedEnemy:
+                            Assets.BOUNDED_ENEMY.draw(self.main_surface, tile)
 
         self.hud.draw()
         pygame.display.update()
