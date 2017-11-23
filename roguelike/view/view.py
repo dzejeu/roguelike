@@ -24,7 +24,7 @@ class View:
         surface_width = tile_size * world.width
         surface_height = tile_size * world.height
 
-        self.main_surface = pygame.display.set_mode((screen_width, screen_height))
+        self.main_surface = pygame.display.set_mode((screen_width, screen_height),pygame.FULLSCREEN)
         self.camera = Camera(surface_width, surface_height, screen_width, screen_height, tile_size)
         self.hud = Hud(self.main_surface, player)
 
