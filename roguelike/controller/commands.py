@@ -7,3 +7,7 @@ class Command(Enum):
     MOVE_DOWN = auto()
     MOVE_LEFT = auto()
     MOVE_RIGHT = auto()
+    ATTACK_UP = auto()
+    ATTACK_LEFT = auto()
+    ATTACK_DOWN = auto()
+    ATTACK_RIGHT = auto()

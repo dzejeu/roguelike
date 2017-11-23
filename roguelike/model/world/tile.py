@@ -4,6 +4,7 @@ class Tile:
     passable = True
     occupied_by = None
     type = "V" #types of tiles V - void, R - room, C - corridor, W - wall, O - obstacle, easily expandable
+    mark_as_attacked = 0
 
     def __init__(self):
         self.occupied_by = None

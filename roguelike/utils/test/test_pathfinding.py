@@ -21,7 +21,8 @@ def test_if_A_star_pathfinding_raise_exception_when_no_path_can_be_found():
         return
 
 
-# def test_efficiency():
-#     world = World(400, 400, default_tile_type='R')
-#     path = A_star_pathfinding(world.tiles[2][3], world.tiles[200][189], world)
-#     return
+def test_efficiency():
+    world = World(400, 400, default_tile_type='R')
+    A_star_pathfinding(world.tiles[2][3], world.tiles[200][189], world)
+    return
+

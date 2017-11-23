@@ -36,4 +36,5 @@ class Assets:
     BOUNDED_ENEMY = Asset(pygame.image.load("assets/skeleton.png"), alpha=True)
     ROOM = Asset(pygame.image.load("assets/room.png"))
     CORRIDOR = Asset(pygame.image.load("assets/room.png"))
+    ATTACK = Asset(pygame.image.load('assets/attack.png'), alpha=True)
     WALL = Asset(create_solid_surface((BASE_ASSET_SIZE, BASE_ASSET_SIZE), (63, 66, 76)))

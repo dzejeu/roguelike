@@ -18,6 +18,11 @@ class DumbMeleeEnemy(BaseEnemy):
         else:
             return self.occupied_tile
 
+    def check_for_attack(self):
+        if self.occupied_tile.mark_as_attacked > 0:
+            self.on_damage(300)
+            self.occupied_tile.mark_as_attacked = 0
+
     def chase_player(self, player_tile):
         best_tile = self.find_best_tile_to_move(player_tile)
         self.move(best_tile.x, best_tile.y)
@@ -45,9 +50,9 @@ class BoundedEnemy(BaseEnemy):
         return self._spawning_tile
 
     def chase_player(self, player_tile):
-        if self.get_distance(self.spawning_tile, self.occupied_tile) > 20:
+        if self.get_distance(self.spawning_tile, self.occupied_tile) > 8:
             tile_to_move = self.find_best_tile_to_move(self.spawning_tile)
-        elif self.get_distance(self.occupied_tile, player_tile) < 20:
+        elif self.get_distance(self.occupied_tile, player_tile) < 8:
             tile_to_move = self.find_best_tile_to_move(player_tile)
         else:
             tile_to_move = self.occupied_tile

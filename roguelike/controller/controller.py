@@ -38,6 +38,22 @@ class Controller:
             direction = MovingDirections.LEFT.value
             self.player.move(self.player.occupied_tile.x + direction.x,
                                    self.player.occupied_tile.y + direction.y)
+        elif command == Command.ATTACK_UP:
+            direction = MovingDirections.UP.value
+            self.player.attack(self.player.occupied_tile.x + direction.x,
+                               self.player.occupied_tile.y + direction.y)
+        elif command == Command.ATTACK_LEFT:
+            direction = MovingDirections.LEFT.value
+            self.player.attack(self.player.occupied_tile.x + direction.x,
+                               self.player.occupied_tile.y + direction.y)
+        elif command == Command.ATTACK_DOWN:
+            direction = MovingDirections.DOWN.value
+            self.player.attack(self.player.occupied_tile.x + direction.x,
+                               self.player.occupied_tile.y + direction.y)
+        elif command == Command.ATTACK_RIGHT:
+            direction = MovingDirections.RIGHT.value
+            self.player.attack(self.player.occupied_tile.x + direction.x,
+                               self.player.occupied_tile.y + direction.y)
 
     def update_view(self):
         self.view.draw(self.player)

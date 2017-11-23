@@ -13,7 +13,7 @@ from roguelike.view import View
 
 def main():
     pygame.init()
-    world_width = 300
+    world_width = 200
     world_height = 100
 
     screen_width = 800
@@ -25,11 +25,13 @@ def main():
 
     pygame.key.set_repeat(1, 100)
     chase_enemy = pygame.USEREVENT + 1
-    pygame.time.set_timer(chase_enemy, 400)
+    check_for_attack = pygame.USEREVENT + 2
+    pygame.time.set_timer(chase_enemy, 500)
+    pygame.time.set_timer(check_for_attack, 100)
     # set_allowed(None) blokuje wszystkie i jest niezbedne zeby pozniej uaktywnic tylko niektore
     # pygame -.-
     pygame.event.set_allowed(None)
-    pygame.event.set_allowed([pygame.QUIT, pygame.KEYDOWN, chase_enemy])
+    pygame.event.set_allowed([pygame.QUIT, pygame.KEYDOWN, chase_enemy, check_for_attack])
 
     world = World(world_width, world_height)
     world.gen_level(10, True, 2)
@@ -37,18 +39,20 @@ def main():
     view = View(world, screen_width, screen_height, player)
     controller = Controller(player, view)
     enemies = []
+    all_characters = []
 
     with open(input_conf_file, 'r') as f:
         controller.input_map = inputmap.load(f)
 
     player.spawn()
-
-    for enemy in range(6):
+    all_characters.append(player)
+    for enemy in range(10):
         easy_enemy = DumbMeleeEnemy(world)
         easy_enemy.spawn_random()
         enemies.append(easy_enemy)
+        all_characters.append(easy_enemy)
 
-    # for enemy in range(4):
+    # for enemy in range(1):
     #     bounded_enemy = BoundedEnemy(world)
     #     bounded_enemy.spawn_random()
     #     enemies.append(bounded_enemy)
@@ -63,6 +67,9 @@ def main():
             if event.type == chase_enemy:
                 for enemy in enemies:
                     enemy.chase_player(player.occupied_tile)
+            if event.type == check_for_attack:
+                for char in all_characters:
+                    char.check_for_attack()
             controller.update_view()
             pygame.time.wait(20)
     pygame.quit()

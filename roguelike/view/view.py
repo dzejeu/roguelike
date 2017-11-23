@@ -66,6 +66,9 @@ class View:
                             Assets.PLAYER.draw(self.main_surface, tile)
                         if self.world.tiles[i][j].occupied_by.__class__ == BoundedEnemy:
                             Assets.BOUNDED_ENEMY.draw(self.main_surface, tile)
+                    if self.world.tiles[i][j].mark_as_attacked > 0:
+                        Assets.ATTACK.draw(self.main_surface, tile)
+                        self.world.tiles[i][j].mark_as_attacked -= 1
 
         self.hud.draw()
         pygame.display.update()
