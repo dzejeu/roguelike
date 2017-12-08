@@ -57,3 +57,7 @@ class Controller:
 
     def update_view(self):
         self.view.draw(self.player)
+    def win_view(self):
+        self.view.draw_win_text()
+    def draw_text(self,t):
+        self.view.draw_text(t)

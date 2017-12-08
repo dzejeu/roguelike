@@ -345,3 +345,10 @@ class World:
         self.check_for_modules()
         self.repaint_corridors()
         self.gen_walls()
+
+    def get_room(self,x,y):
+        for i in range(0, len(self.room_list) - 1):
+            r = self.room_list[i]
+            if x>=r[2] and x<=r[2]+r[0] and y>=r[3] and y<=r[3]+r[1]:
+                return i
+        return -1

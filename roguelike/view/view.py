@@ -72,3 +72,15 @@ class View:
 
         self.hud.draw()
         pygame.display.update()
+
+    def draw_win_text(self):
+        font = pygame.font.SysFont('monospace', 48)
+        text = font.render("You've won!", False, (0,255,0))
+        text_rect = text.get_rect(center=(self.screen_width/2,self.screen_height/2))
+        self.main_surface.blit(text, text_rect)
+
+    def draw_text(self,t):
+        font = pygame.font.SysFont('monospace', 24)
+        text = font.render(t,False,(0,0,255))
+        text_rect = text.get_rect(center=(self.screen_width/2,self.screen_height/2))
+        self.main_surface.blit(text, text_rect)
