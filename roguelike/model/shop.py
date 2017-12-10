@@ -1,3 +1,5 @@
+import pygame
+
 from roguelike.model.menuoption import MenuOption
 
 
@@ -17,6 +19,9 @@ class Shop:
     def buy(self, price, callback):
         if self.player.gold >= price:
             self.player.gold -= price
+            effect = pygame.mixer.Sound('sound/register.ogg')
+            effect.set_volume(0.1)
+            effect.play()
             callback()
 
     def first_aid(self):
