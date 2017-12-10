@@ -30,6 +30,7 @@ class View:
         self.main_surface = pygame.display.set_mode((screen_width, screen_height),pygame.FULLSCREEN)
         self.camera = Camera(surface_width, surface_height, screen_width, screen_height, tile_size)
         self.hud = Hud(self.main_surface, player)
+        self.menu = None
 
     def draw(self, player):
         player_position = (player.occupied_tile.x, player.occupied_tile.y)
@@ -83,8 +84,10 @@ class View:
                         Assets.ATTACK.draw(self.main_surface, tile)
                         self.world.tiles[i][j].mark_as_attacked -= 1
 
-
         self.hud.draw()
+        if self.menu is not None:
+            self.menu.draw()
+            self.hud.draw_player_data()
         pygame.display.update()
 
     def draw_win_text(self):

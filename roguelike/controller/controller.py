@@ -5,6 +5,8 @@ from roguelike.controller.commands import Command
 from roguelike.model.character import MovingDirections
 from roguelike.model.player import Player
 from roguelike.view import View
+from roguelike.model.shop import Shop
+from roguelike.view.menu import Menu
 
 
 class Controller:
@@ -13,6 +15,10 @@ class Controller:
         self.running: bool = True
         self.view: View = view
         self.input_map: Dict[int, Command] = dict()
+        self.menu = None
+        self.shop = Menu(Shop(player, "SKLEP"), self.view.main_surface, player)
+        self.menu_options = [getattr(Command, "OPTION_{}".format(i)) for i in range(1, 10)]
+        self.menu_options.append(Command.OPTION_0)
 
     def process_input(self, key):
         command = self.input_map.get(key)
@@ -78,6 +84,20 @@ class Controller:
             effect = pygame.mixer.Sound('sound/attack.wav')
             effect.set_volume(0.1)
             effect.play()
+
+        elif command == Command.SHOP_TOGGLE:
+            if self.menu is None:
+                self.menu = self.shop
+                self.view.menu = self.shop
+            elif self.menu is self.shop:
+                self.menu = None
+                self.view.menu = None
+        elif command in self.menu_options:
+            if self.menu is not None:
+                i = self.menu_options.index(command)
+                self.menu.data.select_option(i)
+
+
 
     def update_view(self):
         self.view.draw(self.player)
