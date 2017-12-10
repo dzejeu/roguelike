@@ -1,6 +1,8 @@
 from roguelike.model.character import Character
 import random
 
+from roguelike.model import player
+from roguelike.utils.pathfinding import get_adjacent_reachable_tiles
 
 class BaseEnemy(Character):
 
@@ -19,3 +21,9 @@ class BaseEnemy(Character):
                 if self.occupied_tile is not None:
                     self.occupied_tile.leave()
                 self.occupied_tile = self.world.tiles[x][y].occupy(self)
+
+    def attack(self):
+        neighbours = get_adjacent_reachable_tiles(self.occupied_tile, self.world)
+        for neighbour in neighbours:
+            if neighbour.occupied_by.__class__ == player.Player:
+                neighbour.occupied_by.on_damage(self.base_attack)

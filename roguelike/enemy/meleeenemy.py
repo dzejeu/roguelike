@@ -11,6 +11,10 @@ from roguelike.utils.pathfinding import get_adjacent_reachable_tiles, A_star_pat
 
 
 class DumbMeleeEnemy(BaseEnemy):
+    def __init__(self, world: World):
+        super().__init__(world)
+        self.base_attack = 40
+
     def find_best_tile_to_move(self, target_tile):
         reachable_tiles = get_adjacent_reachable_tiles(self.occupied_tile, self.world)
         if reachable_tiles:
@@ -28,6 +32,7 @@ class DumbMeleeEnemy(BaseEnemy):
     def chase_player(self, player_tile):
         best_tile = self.find_best_tile_to_move(player_tile)
         self.move(best_tile.x, best_tile.y)
+        self.attack()
 
 
 class BoundedEnemy(BaseEnemy):
@@ -36,6 +41,8 @@ class BoundedEnemy(BaseEnemy):
         self.memory = deque()
         self._spawning_tile = None
         super().__init__(world)
+        self.base_attack = 90
+        self.base_defense = 40
 
     def reduce_world(self, reduction):
         if self.occupied_tile.x - reduction >= 0:
@@ -107,3 +114,4 @@ class BoundedEnemy(BaseEnemy):
                 tile_to_move = self.support_pathfinding(player_tile)
         self.counter = (self.counter + 1) % 28
         self.move(tile_to_move.x, tile_to_move.y)
+        self.attack()
