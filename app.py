@@ -5,6 +5,7 @@ import pygame
 
 from roguelike.controller import Controller
 from roguelike.controller import inputmap
+from roguelike.enemy import BaseEnemy
 from roguelike.enemy.meleeenemy import DumbMeleeEnemy, BoundedEnemy
 from roguelike.model import World
 from roguelike.model.player import Player
@@ -45,6 +46,11 @@ def next_level(world,player,controller):
             enemies.append(easy_enemy)
             all_characters.append(easy_enemy)
 
+        for enemy in range(level.c_count[1]):
+            smarter_enemy = BoundedEnemy(world)
+            smarter_enemy.spawn_random()
+            enemies.append(smarter_enemy)
+            all_characters.append(smarter_enemy)
         # enemy 2 i 3 typu
 
         chase_enemy = pygame.USEREVENT + 1
@@ -81,15 +87,15 @@ def main():
     if not os.path.exists(input_conf_file):
         copyfile(input_conf_file + ".default", input_conf_file)
 
-    pygame.key.set_repeat(1, 100)
+    pygame.key.set_repeat(1, 120)
     chase_enemy = pygame.USEREVENT + 1
-    check_for_attack = pygame.USEREVENT + 2
-    pygame.time.set_timer(chase_enemy, 500)
-    pygame.time.set_timer(check_for_attack, 100)
+    check_if_alived = pygame.USEREVENT + 2
+    pygame.time.set_timer(chase_enemy, 450)
+    pygame.time.set_timer(check_if_alived, 300)
     # set_allowed(None) blokuje wszystkie i jest niezbedne zeby pozniej uaktywnic tylko niektore
     # pygame -.-
     pygame.event.set_allowed(None)
-    pygame.event.set_allowed([pygame.QUIT, pygame.KEYDOWN, chase_enemy, check_for_attack])
+    pygame.event.set_allowed([pygame.QUIT, pygame.KEYDOWN, chase_enemy, check_if_alived])
 
     world = World(world_width, world_height)
     player = Player(world)
@@ -139,9 +145,12 @@ def main():
                 if event.type == chase_enemy:
                     for enemy in enemies:
                         enemy.chase_player(player.occupied_tile)
-                if event.type == check_for_attack:
+                if event.type == check_if_alived:
                     for char in all_characters:
-                        char.check_for_attack()
+                        if not char.check_if_alived():
+                            all_characters.remove(char)
+                            if issubclass(char.__class__, BaseEnemy):
+                                enemies.remove(char)
                 controller.update_view()
                 pygame.time.wait(20)
     pygame.quit()

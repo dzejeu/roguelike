@@ -28,6 +28,9 @@ class Character(Entity):
         self.looking_direction = MovingDirections.UP
         self.occupied_tile = None
 
+    def check_if_alived(self):
+        pass
+
     def get_defense(self) -> int:
         return self.base_defense
 

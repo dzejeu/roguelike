@@ -19,10 +19,11 @@ class DumbMeleeEnemy(BaseEnemy):
         else:
             return self.occupied_tile
 
-    def check_for_attack(self):
-        if self.occupied_tile.mark_as_attacked > 0:
-            self.on_damage(300)
-            self.occupied_tile.mark_as_attacked = 0
+    def check_if_alived(self):
+        if self.hp == 0:
+            self.occupied_tile.leave()
+            return False
+        return True
 
     def chase_player(self, player_tile):
         best_tile = self.find_best_tile_to_move(player_tile)
@@ -80,6 +81,12 @@ class BoundedEnemy(BaseEnemy):
             self._spawning_tile = self.occupied_tile
         return self._spawning_tile
 
+    def check_if_alived(self):
+        if self.hp == 0:
+            self.occupied_tile.leave()
+            return False
+        return True
+
     def chase_player(self, player_tile):
         if self.counter != 0:
             if get_manhattan_distance(self.occupied_tile, player_tile) < 20:
@@ -92,8 +99,11 @@ class BoundedEnemy(BaseEnemy):
         else:
             if get_manhattan_distance(self.occupied_tile, player_tile) < 20:
                 self.memory = deque(self.find_best_tile_to_move(player_tile))
-                tile_to_move = self.memory.pop()
+                if self.memory:
+                    tile_to_move = self.memory.pop()
+                else:
+                    tile_to_move = self.support_pathfinding(player_tile)
             else:
                 tile_to_move = self.support_pathfinding(player_tile)
-        self.counter = (self.counter + 1) % 30
+        self.counter = (self.counter + 1) % 28
         self.move(tile_to_move.x, tile_to_move.y)
