@@ -1,9 +1,11 @@
+import random
 from math import pow, sqrt
 from collections import deque
 
 import numpy
 
 from roguelike.enemy import BaseEnemy
+from roguelike.model.money import Gold
 from roguelike.model.world.tile import Tile
 from roguelike.model.world.world import World
 from roguelike.utils.pathfinding import get_adjacent_reachable_tiles, A_star_pathfinding, PathNotFound, \
@@ -26,6 +28,8 @@ class DumbMeleeEnemy(BaseEnemy):
     def check_if_alived(self):
         if self.hp == 0:
             self.occupied_tile.leave()
+            gold = Gold(self.occupied_tile, random.randint(1, 6))
+            gold.drop()
             return False
         return True
 
@@ -91,6 +95,8 @@ class BoundedEnemy(BaseEnemy):
     def check_if_alived(self):
         if self.hp == 0:
             self.occupied_tile.leave()
+            gold = Gold(self.occupied_tile, random.randint(4, 12))
+            gold.drop()
             return False
         return True
 

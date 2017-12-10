@@ -38,3 +38,4 @@ class Assets:
     CORRIDOR = Asset(pygame.image.load("assets/room.png"))
     ATTACK = Asset(pygame.image.load('assets/attack.png'), alpha=True)
     WALL = Asset(create_solid_surface((BASE_ASSET_SIZE, BASE_ASSET_SIZE), (63, 66, 76)))
+    GOLD = Asset(pygame.image.load('assets/gold.png'), (16, 16), (10, 10), alpha=True)
