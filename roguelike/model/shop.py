@@ -8,7 +8,7 @@ class Shop:
         self.options = [
             MenuOption("apteczka (+20hp) - 20g", self.buy, {"price": 20, "callback": self.first_aid}),
             MenuOption("miecz (+10%) - 50g", self.buy, {"price": 50, "callback": self.sword}),
-            MenuOption("helm (+5%) - 40g", self.buy, {"price": 20, "callback": self.helmet}),
+            MenuOption("helm (+5%) - 40g", self.buy, {"price": 40, "callback": self.helmet}),
             MenuOption("napiersnik (+10%) - 80g", self.buy, {"price": 80, "callback": self.breastplate}),
             MenuOption("rekawice (+3%) - 30g", self.buy, {"price": 30, "callback": self.gloves}),
             MenuOption("buty (+4%) - 35g", self.buy, {"price": 30, "callback": self.boots}),
