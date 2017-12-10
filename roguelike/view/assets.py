@@ -42,3 +42,7 @@ class Assets:
     ATTACK = Asset(pygame.image.load('assets/attack.png'), alpha=True)
     WALL = Asset(create_solid_surface((BASE_ASSET_SIZE, BASE_ASSET_SIZE), (63, 66, 76)))
     GOLD = Asset(pygame.image.load('assets/gold.png'), (16, 16), (10, 10), alpha=True)
+    ENEMY_ATTACK = Asset(pygame.image.load('assets/enemy_attack.png'), (12, 12), (-5, -5), alpha=True)
+    SHIELD = Asset(pygame.image.load('assets/shield.png'), (16, 16), (10, 10), alpha=True)
+    SWORD = Asset(pygame.image.load('assets/sword.png'), (16, 16), (10, 10), alpha=True)
+

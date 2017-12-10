@@ -11,15 +11,14 @@ from roguelike.model import World
 from roguelike.model.player import Player
 from roguelike.view import View
 from roguelike.model.world.level import Level
-
+from roguelike.model.world.skill import Skill
 enemies = []
 all_characters = []
 visited_rooms = []
 obj_no = 0
 room_no = 0
 level_no = 0
-
-#Nie wiem, czemu tego tekstu nie generuje, ale już wjbn
+enemy_no = 0
 
 def next_level(world,player,controller):
     controller.draw_text("Wait, level is being generated!")
@@ -30,10 +29,12 @@ def next_level(world,player,controller):
     global enemies
     global visited_rooms
     global level_no
+    global enemy_no
     if level_no<10:
         level = Level(level_no)
         obj_no = level.obj_no
         room_no=level.room_count[level_no]
+        enemy_no=level.a_count[level_no]+level.b_count[level_no]+level.c_count[level_no]
         all_characters=[]
         enemies=[]
         visited_rooms=[]
@@ -46,12 +47,11 @@ def next_level(world,player,controller):
             enemies.append(easy_enemy)
             all_characters.append(easy_enemy)
 
-        for enemy in range(level.c_count[1]):
+        for enemy in range(level.c_count[level_no]):
             smarter_enemy = BoundedEnemy(world)
             smarter_enemy.spawn_random()
             enemies.append(smarter_enemy)
             all_characters.append(smarter_enemy)
-        # enemy 2 i 3 typu
 
         chase_enemy = pygame.USEREVENT + 1
         check_for_attack = pygame.USEREVENT + 2
@@ -68,7 +68,7 @@ def next_level(world,player,controller):
 def main():
     pygame.init()
     pygame.font.init()
-
+    pygame.mixer.init()
     world_width = 200
     world_height = 100
 
@@ -82,6 +82,7 @@ def main():
     global enemies
     global visited_rooms
     global level_no
+    global enemy_no
 
     input_conf_file = os.path.join(os.path.dirname(__file__), 'input.conf')
     if not os.path.exists(input_conf_file):
@@ -103,6 +104,7 @@ def main():
     controller = Controller(player, view)
 
     next_level(world,player,controller)
+    skill = Skill(player)
     pygame.mixer.music.load('sound/bgsound.mp3')
     pygame.mixer.music.play(-1)
 
@@ -133,15 +135,21 @@ def main():
                             if len(visited_rooms)==room_no:
                                 level_no=level_no+1
                                 next_level(world, player,controller)
+                                skill.improve(level_no)
                     elif obj_no == 1:
                         if len(enemies)==0:
                             level_no = level_no + 1
                             next_level(world, player,controller)
+                            skill.improve(level_no)
                     elif obj_no == 3:
                         if len(enemies)==0:
                             level_no = level_no + 1
                             next_level(world, player,controller)
-                        #goldzik
+                            skill.improve(level_no)
+                        if player.gold >= enemy_no*3:
+                            level_no = level_no + 1
+                            next_level(world, player,controller)
+                            skill.improve(level_no)
                 if event.type == chase_enemy:
                     for enemy in enemies:
                         enemy.chase_player(player.occupied_tile)

@@ -35,12 +35,27 @@ class Hud:
         self.draw_character_data(self.player, self.player_hp_bg_position)
         font = pygame.font.SysFont('monospace', 16)
         text = font.render(str(self.player.gold), False, (255,255,255))
+        attack = font.render(str(int(self.player.base_attack)), False, (255,255,255))
+        defence = font.render(str(int(self.player.base_defense)), False, (255,255,255))
+
         text_rect = text.get_rect()
+        defence_rect = defence.get_rect()
+        attack_rect = attack.get_rect()
+
         text_rect[0] = Hud.MARGIN*2 + Assets.GOLD.size[0]
         text_rect[1] = Hud.MARGIN*2 + Hud.MAIN_BAR_HEIGHT
-        Assets.GOLD.draw(self.surface, (0, Hud.MARGIN + Hud.MAIN_BAR_HEIGHT))
-        self.surface.blit(text, text_rect)
+        defence_rect[0] = Hud.MARGIN * 2 + Assets.SHIELD.size[0]
+        defence_rect[1] = Hud.MARGIN * 2 + Hud.MAIN_BAR_HEIGHT + 20
+        attack_rect[0] = Hud.MARGIN * 2 + Assets.SWORD.size[0]
+        attack_rect[1] = Hud.MARGIN * 2 + Hud.MAIN_BAR_HEIGHT+40
 
+        Assets.GOLD.draw(self.surface, (0, Hud.MARGIN + Hud.MAIN_BAR_HEIGHT))
+        Assets.SHIELD.draw(self.surface, (0, Hud.MARGIN + Hud.MAIN_BAR_HEIGHT+20))
+        Assets.SWORD.draw(self.surface, (0, Hud.MARGIN + Hud.MAIN_BAR_HEIGHT+40))
+
+        self.surface.blit(text, text_rect)
+        self.surface.blit(defence, defence_rect)
+        self.surface.blit(attack, attack_rect)
 
     def draw_character_data(self, character, position):
         self.surface.fill(Hud.HP_BG_COLOR, position)
