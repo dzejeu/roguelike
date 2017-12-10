@@ -8,6 +8,7 @@ class Player(Character):
         super().__init__(world)
         self.base_attack = 300
         self.base_defense = 100
+        self.gold = 0
 
     def spawn(self):
         spawn_room = self.world.room_list[0]

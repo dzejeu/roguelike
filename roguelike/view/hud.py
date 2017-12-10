@@ -18,6 +18,7 @@ class Hud:
         self.player = player
         self.surface: pygame.Surface = surface
         self.player_hp_bg_position = (Hud.MARGIN, Hud.MARGIN, Hud.MAIN_BAR_WIDTH, Hud.MAIN_BAR_HEIGHT)
+        self.money_position = (Hud.MARGIN, Hud.MARGIN*2 + Hud.MAIN_BAR_HEIGHT)
         self.character_queue = []
 
     def draw(self):
@@ -32,6 +33,14 @@ class Hud:
 
     def draw_player_data(self):
         self.draw_character_data(self.player, self.player_hp_bg_position)
+        font = pygame.font.SysFont('monospace', 16)
+        text = font.render(str(self.player.gold), False, (255,255,255))
+        text_rect = text.get_rect()
+        text_rect[0] = Hud.MARGIN*2 + Assets.GOLD.size[0]
+        text_rect[1] = Hud.MARGIN*2 + Hud.MAIN_BAR_HEIGHT
+        Assets.GOLD.draw(self.surface, (0, Hud.MARGIN + Hud.MAIN_BAR_HEIGHT))
+        self.surface.blit(text, text_rect)
+
 
     def draw_character_data(self, character, position):
         self.surface.fill(Hud.HP_BG_COLOR, position)
