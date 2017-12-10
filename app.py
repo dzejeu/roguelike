@@ -135,17 +135,21 @@ def main():
                             if len(visited_rooms)==room_no:
                                 level_no=level_no+1
                                 next_level(world, player,controller)
+                                skill.improve(level_no)
                     elif obj_no == 1:
                         if len(enemies)==0:
                             level_no = level_no + 1
                             next_level(world, player,controller)
+                            skill.improve(level_no)
                     elif obj_no == 3:
                         if len(enemies)==0:
                             level_no = level_no + 1
                             next_level(world, player,controller)
+                            skill.improve(level_no)
                         if player.gold >= enemy_no*3:
                             level_no = level_no + 1
                             next_level(world, player,controller)
+                            skill.improve(level_no)
                 if event.type == chase_enemy:
                     for enemy in enemies:
                         enemy.chase_player(player.occupied_tile)
@@ -155,7 +159,6 @@ def main():
                             all_characters.remove(char)
                             if issubclass(char.__class__, BaseEnemy):
                                 enemies.remove(char)
-                skill.improve(level_no)
                 controller.update_view()
                 pygame.time.wait(20)
     pygame.quit()
