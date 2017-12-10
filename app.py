@@ -11,7 +11,7 @@ from roguelike.model import World
 from roguelike.model.player import Player
 from roguelike.view import View
 from roguelike.model.world.level import Level
-
+from roguelike.model.world.skill import Skill
 enemies = []
 all_characters = []
 visited_rooms = []
@@ -103,6 +103,7 @@ def main():
     controller = Controller(player, view)
 
     next_level(world,player,controller)
+    skill = Skill(player)
     pygame.mixer.music.load('sound/bgsound.mp3')
     pygame.mixer.music.play(-1)
 
@@ -151,6 +152,7 @@ def main():
                             all_characters.remove(char)
                             if issubclass(char.__class__, BaseEnemy):
                                 enemies.remove(char)
+                skill.improve(level_no)
                 controller.update_view()
                 pygame.time.wait(20)
     pygame.quit()
