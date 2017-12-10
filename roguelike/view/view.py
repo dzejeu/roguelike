@@ -61,6 +61,8 @@ class View:
 
                     # there should not be any characters in void
                     # draw characters
+                    if self.world.tiles[i][j].gold_dropped is not None:
+                        Assets.GOLD.draw(self.main_surface, tile)
                     if self.world.tiles[i][j].occupied_by is not None:
                         if self.world.tiles[i][j].occupied_by.__class__ == DumbMeleeEnemy:
                             Assets.DUMB_ENEMY.draw(self.main_surface, tile)
@@ -80,8 +82,7 @@ class View:
                     if self.world.tiles[i][j].mark_as_attacked > 0:
                         Assets.ATTACK.draw(self.main_surface, tile)
                         self.world.tiles[i][j].mark_as_attacked -= 1
-                    if self.world.tiles[i][j].gold_dropped is not None:
-                        Assets.GOLD.draw(self.main_surface, tile)
+
 
         self.hud.draw()
         pygame.display.update()

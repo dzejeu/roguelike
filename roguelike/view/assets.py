@@ -10,8 +10,8 @@ def create_solid_surface(size, color):
 
 
 class Asset:
-    def __init__(self, surface: pygame.Surface, size = (BASE_ASSET_SIZE, BASE_ASSET_SIZE),
-                 offset = None, alpha = False):
+    def __init__(self, surface: pygame.Surface, size=(BASE_ASSET_SIZE, BASE_ASSET_SIZE),
+                 offset=None, alpha=False):
         self.surface: pygame.Surface = surface
         self.size = size
         self.offset = offset
