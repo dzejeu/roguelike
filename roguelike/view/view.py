@@ -6,6 +6,8 @@ from roguelike.model.player import Player
 from roguelike.model.world import World
 from roguelike.view.hud import Hud
 from .assets import Assets
+import sys; sys.path.insert(0, "..")
+from pgu import gui
 
 room_color = (255, 255, 255)
 wall_color = (255, 0, 0)
@@ -84,3 +86,5 @@ class View:
         text = font.render(t,False,(0,0,255))
         text_rect = text.get_rect(center=(self.screen_width/2,self.screen_height/2))
         self.main_surface.blit(text, text_rect)
+
+

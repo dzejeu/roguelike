@@ -56,6 +56,7 @@ def next_level(world,player,controller):
         world.gen_level(10, True, 5)
         player.spawn()
         all_characters.append(player)
+        pygame.mixer.music.stop()
 
 
 def main():
@@ -96,6 +97,8 @@ def main():
     controller = Controller(player, view)
 
     next_level(world,player,controller)
+    pygame.mixer.music.load('sound/bgsound.mp3')
+    pygame.mixer.music.play(-1)
 
     with open(input_conf_file, 'r') as f:
         controller.input_map = inputmap.load(f)

@@ -26,34 +26,58 @@ class Controller:
             direction = MovingDirections.UP.value
             self.player.move(self.player.occupied_tile.x + direction.x,
                                    self.player.occupied_tile.y + direction.y)
+            effect = pygame.mixer.Sound('sound/footsteps.wav')
+            effect.set_volume(0.1)
+            effect.play()
         elif command == Command.MOVE_DOWN:
             direction = MovingDirections.DOWN.value
             self.player.move(self.player.occupied_tile.x + direction.x,
                                    self.player.occupied_tile.y + direction.y)
+            effect = pygame.mixer.Sound('sound/footsteps.wav')
+            effect.set_volume(0.1)
+            effect.play()
         elif command == Command.MOVE_RIGHT:
             direction = MovingDirections.RIGHT.value
             self.player.move(self.player.occupied_tile.x + direction.x,
                                    self.player.occupied_tile.y + direction.y)
+            effect = pygame.mixer.Sound('sound/footsteps.wav')
+            effect.set_volume(0.1)
+            effect.play()
         elif command == Command.MOVE_LEFT:
             direction = MovingDirections.LEFT.value
             self.player.move(self.player.occupied_tile.x + direction.x,
                                    self.player.occupied_tile.y + direction.y)
+            effect = pygame.mixer.Sound('sound/footsteps.wav')
+            effect.set_volume(0.1)
+            effect.play()
         elif command == Command.ATTACK_UP:
             direction = MovingDirections.UP.value
             self.player.attack(self.player.occupied_tile.x + direction.x,
                                self.player.occupied_tile.y + direction.y)
+            effect = pygame.mixer.Sound('sound/attack.wav')
+            effect.set_volume(0.1)
+            effect.play()
         elif command == Command.ATTACK_LEFT:
             direction = MovingDirections.LEFT.value
             self.player.attack(self.player.occupied_tile.x + direction.x,
                                self.player.occupied_tile.y + direction.y)
+            effect = pygame.mixer.Sound('sound/attack.wav')
+            effect.set_volume(0.1)
+            effect.play()
         elif command == Command.ATTACK_DOWN:
             direction = MovingDirections.DOWN.value
             self.player.attack(self.player.occupied_tile.x + direction.x,
                                self.player.occupied_tile.y + direction.y)
+            effect = pygame.mixer.Sound('sound/attack.wav')
+            effect.set_volume(0.1)
+            effect.play()
         elif command == Command.ATTACK_RIGHT:
             direction = MovingDirections.RIGHT.value
             self.player.attack(self.player.occupied_tile.x + direction.x,
                                self.player.occupied_tile.y + direction.y)
+            effect = pygame.mixer.Sound('sound/attack.wav')
+            effect.set_volume(0.1)
+            effect.play()
 
     def update_view(self):
         self.view.draw(self.player)
