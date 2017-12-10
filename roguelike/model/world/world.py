@@ -1,6 +1,6 @@
 import random
 from typing import List
-
+import numpy as np
 from roguelike.model.world.tile import Tile
 from roguelike.utils import pathfinding
 

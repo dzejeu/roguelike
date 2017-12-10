@@ -26,7 +26,7 @@ def main():
     pygame.key.set_repeat(1, 100)
     chase_enemy = pygame.USEREVENT + 1
     check_for_attack = pygame.USEREVENT + 2
-    pygame.time.set_timer(chase_enemy, 500)
+    pygame.time.set_timer(chase_enemy, 380)
     pygame.time.set_timer(check_for_attack, 100)
     # set_allowed(None) blokuje wszystkie i jest niezbedne zeby pozniej uaktywnic tylko niektore
     # pygame -.-
@@ -46,16 +46,16 @@ def main():
 
     player.spawn()
     all_characters.append(player)
-    for enemy in range(10):
+    for enemy in range(6):
         easy_enemy = DumbMeleeEnemy(world)
         easy_enemy.spawn_random()
         enemies.append(easy_enemy)
         all_characters.append(easy_enemy)
 
-    # for enemy in range(1):
-    #     bounded_enemy = BoundedEnemy(world)
-    #     bounded_enemy.spawn_random()
-    #     enemies.append(bounded_enemy)
+    for enemy in range(3):
+        bounded_enemy = BoundedEnemy(world)
+        bounded_enemy.spawn_random()
+        enemies.append(bounded_enemy)
 
     while controller.running:
         for event in pygame.event.get():
