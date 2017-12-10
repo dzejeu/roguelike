@@ -4,6 +4,8 @@
 """
 import os
 
+#from pygame.constants import MOUSEBUTTONUP, MOUSEBUTTONDOWN, MOUSEMOTION
+
 try:
     from configparser import ConfigParser
 except:

@@ -29,3 +29,4 @@ class TestMeleeEnemy(TestCase):
 
         enemy.chase_player(player.occupied_tile)
         self.assertEquals(world.tiles[0][1].occupied_by.__class__, DumbMeleeEnemy)
+
