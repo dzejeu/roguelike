@@ -27,3 +27,4 @@ class BaseEnemy(Character):
         for neighbour in neighbours:
             if neighbour.occupied_by.__class__ == player.Player:
                 neighbour.occupied_by.on_damage(self.base_attack)
+                neighbour.mark_as_attacked_by_enemy = 2
