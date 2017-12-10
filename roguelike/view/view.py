@@ -6,7 +6,9 @@ from roguelike.model.player import Player
 from roguelike.model.world import World
 from roguelike.view.hud import Hud
 from .assets import Assets
-import sys; sys.path.insert(0, "..")
+import sys;
+
+sys.path.insert(0, "..")
 from pgu import gui
 
 room_color = (255, 255, 255)
@@ -16,8 +18,9 @@ enemy_color = (0, 255, 0)
 
 tile_size = Assets.BASE_ASSET_SIZE
 
+
 class View:
-    def __init__(self, world: World, screen_width:int, screen_height:int, player):
+    def __init__(self, world: World, screen_width: int, screen_height: int, player):
         self.world: World = world
 
         self.screen_width = screen_width
@@ -26,7 +29,7 @@ class View:
         surface_width = tile_size * world.width
         surface_height = tile_size * world.height
 
-        self.main_surface = pygame.display.set_mode((screen_width, screen_height),pygame.FULLSCREEN)
+        self.main_surface = pygame.display.set_mode((screen_width, screen_height), pygame.FULLSCREEN)
         self.camera = Camera(surface_width, surface_height, screen_width, screen_height, tile_size)
         self.hud = Hud(self.main_surface, player)
 
@@ -55,7 +58,7 @@ class View:
                     tile_asset = Assets.CORRIDOR
 
                 if tile_asset is not None:
-                    tile = ((i * tile_size)+x_offset , (j * tile_size)+y_offset)
+                    tile = ((i * tile_size) + x_offset, (j * tile_size) + y_offset)
                     tile_asset.draw(self.main_surface, tile)
 
                     # there should not be any characters in void
@@ -73,22 +76,24 @@ class View:
                             self.hud.draw_character(self.world.tiles[i][j].occupied_by, tile)
                     if self.world.tiles[i][j].mark_as_attacked > 0:
                         Assets.ATTACK.draw(self.main_surface, tile)
-                        self.world.tiles[i][j].mark_as_attacked -= 1
-
+                        self.world.tiles[i][j].mark_as_attacked = max(
+                            (self.world.tiles[i][j].mark_as_attacked - 1, 0))
+                    if self.world.tiles[i][j].mark_as_attacked_by_enemy > 0:
+                        Assets.ENEMY_ATTACK.draw(self.main_surface, tile)
+                        self.world.tiles[i][j].mark_as_attacked_by_enemy = max(
+                            (self.world.tiles[i][j].mark_as_attacked_by_enemy - 1, 0))
 
         self.hud.draw()
         pygame.display.update()
 
     def draw_win_text(self):
         font = pygame.font.SysFont('monospace', 48)
-        text = font.render("You've won!", False, (0,255,0))
-        text_rect = text.get_rect(center=(self.screen_width/2,self.screen_height/2))
+        text = font.render("You've won!", False, (0, 255, 0))
+        text_rect = text.get_rect(center=(self.screen_width / 2, self.screen_height / 2))
         self.main_surface.blit(text, text_rect)
 
-    def draw_text(self,t):
+    def draw_text(self, t):
         font = pygame.font.SysFont('monospace', 24)
-        text = font.render(t,False,(0,0,255))
-        text_rect = text.get_rect(center=(self.screen_width/2,self.screen_height/2))
+        text = font.render(t, False, (0, 0, 255))
+        text_rect = text.get_rect(center=(self.screen_width / 2, self.screen_height / 2))
         self.main_surface.blit(text, text_rect)
-
-
