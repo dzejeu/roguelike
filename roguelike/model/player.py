@@ -1,3 +1,5 @@
+import pygame
+
 from roguelike.enemy import BaseEnemy
 from roguelike.enemy.meleeenemy import DumbMeleeEnemy
 from roguelike.model.character import Character, MovingDirections
@@ -27,6 +29,9 @@ class Player(Character):
                 if gold is not None:
                     self.gold += gold.amount
                     self.world.tiles[x][y].gold_dropped = None
+                    effect = pygame.mixer.Sound('sound/coin.ogg')
+                    effect.set_volume(0.1)
+                    effect.play()
                 if self.occupied_tile is not None:
                     self.occupied_tile.leave()
                 self.occupied_tile = self.world.tiles[x][y].occupy(self)

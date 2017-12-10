@@ -1,3 +1,5 @@
+import pygame
+
 from roguelike.model.character import Character
 import random
 
@@ -28,3 +30,6 @@ class BaseEnemy(Character):
             if neighbour.occupied_by.__class__ == player.Player:
                 neighbour.occupied_by.on_damage(self.base_attack)
                 neighbour.mark_as_attacked_by_enemy = 2
+                effect = pygame.mixer.Sound('sound/bite.ogg')
+                effect.set_volume(0.1)
+                effect.play()
