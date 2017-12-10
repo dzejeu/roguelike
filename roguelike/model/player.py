@@ -23,6 +23,10 @@ class Player(Character):
 
         if self.world.tiles[x][y].type == "R" or self.world.tiles[x][y].type == "C":
             if self.world.tiles[x][y].passable:
+                gold = self.world.tiles[x][y].gold_dropped
+                if gold is not None:
+                    self.gold += gold.amount
+                    self.world.tiles[x][y].gold_dropped = None
                 if self.occupied_tile is not None:
                     self.occupied_tile.leave()
                 self.occupied_tile = self.world.tiles[x][y].occupy(self)
