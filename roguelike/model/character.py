@@ -13,6 +13,22 @@ class MovingDirections(Enum):
     LEFT = Direction(-1, 0)
     RIGHT = Direction(1, 0)
 
+    @staticmethod
+    def get_direction_from_diff(old, new):
+        dx = new[0] - old[0]
+        dy = new[1] - old[1]
+
+        if abs(dx) > abs(dy):
+            if dx > 0:
+                return MovingDirections.RIGHT
+            else:
+                return MovingDirections.LEFT
+        else:
+            if dy > 0:
+                return MovingDirections.DOWN
+            else:
+                return MovingDirections.UP
+
 
 class Character(Entity):
     """

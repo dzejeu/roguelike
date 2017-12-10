@@ -31,7 +31,10 @@ class Asset:
 
 class Assets:
     BASE_ASSET_SIZE = BASE_ASSET_SIZE
-    PLAYER = Asset(pygame.image.load("assets/player_right.png"), (32, 42), (0, -10), alpha=True)
+    PLAYER_FRONT = Asset(pygame.image.load("assets/player_front.png"), (32, 42), (0, -10), alpha=True)
+    PLAYER_BACK = Asset(pygame.image.load("assets/player_back.png"), (32, 42), (0, -10), alpha=True)
+    PLAYER_LEFT = Asset(pygame.image.load("assets/player_left.png"), (32, 42), (0, -10), alpha=True)
+    PLAYER_RIGHT = Asset(pygame.image.load("assets/player_right.png"), (32, 42), (0, -10), alpha=True)
     DUMB_ENEMY = Asset(pygame.image.load("assets/ghost.png"), alpha=True)
     BOUNDED_ENEMY = Asset(pygame.image.load("assets/skeleton.png"), alpha=True)
     ROOM = Asset(pygame.image.load("assets/room.png"))

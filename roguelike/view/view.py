@@ -10,6 +10,7 @@ import sys;
 
 sys.path.insert(0, "..")
 from pgu import gui
+from roguelike.model.character import MovingDirections
 
 room_color = (255, 255, 255)
 wall_color = (255, 0, 0)
@@ -70,7 +71,14 @@ class View:
                             Assets.DUMB_ENEMY.draw(self.main_surface, tile)
                             self.hud.draw_character(self.world.tiles[i][j].occupied_by, tile)
                         if self.world.tiles[i][j].occupied_by.__class__ == Player:
-                            Assets.PLAYER.draw(self.main_surface, tile)
+                            if player.looking_direction == MovingDirections.UP:
+                                Assets.PLAYER_BACK.draw(self.main_surface, tile)
+                            elif player.looking_direction == MovingDirections.DOWN:
+                                Assets.PLAYER_FRONT.draw(self.main_surface, tile)
+                            elif player.looking_direction == MovingDirections.LEFT:
+                                Assets.PLAYER_LEFT.draw(self.main_surface, tile)
+                            elif player.looking_direction == MovingDirections.RIGHT:
+                                Assets.PLAYER_RIGHT.draw(self.main_surface, tile)
                         if self.world.tiles[i][j].occupied_by.__class__ == BoundedEnemy:
                             Assets.BOUNDED_ENEMY.draw(self.main_surface, tile)
                             self.hud.draw_character(self.world.tiles[i][j].occupied_by, tile)
