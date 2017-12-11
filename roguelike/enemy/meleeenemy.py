@@ -16,7 +16,7 @@ from roguelike.utils.pathfinding import get_adjacent_reachable_tiles, A_star_pat
 class Ghost(BaseEnemy):
     def __init__(self, world: World):
         super().__init__(world)
-        self.base_attack = 130
+        self.base_attack = 100
 
     def find_best_tile_to_move(self, target_tile):
         reachable_tiles = get_adjacent_reachable_tiles(self.occupied_tile, self.world)
@@ -39,7 +39,11 @@ class Ghost(BaseEnemy):
             best_tile = self.find_best_tile_to_move(player_tile)
             self.move(best_tile.x, best_tile.y)
         else:
-            [tile_to_move] = random.sample(get_adjacent_reachable_tiles(self.occupied_tile, self.world), 1)
+            adjacent_tiles = get_adjacent_reachable_tiles(self.occupied_tile, self.world)
+            if adjacent_tiles:
+                [tile_to_move] = random.sample(adjacent_tiles, 1)
+            else:
+                tile_to_move = self.occupied_tile
             self.move(tile_to_move.x, tile_to_move.y)
         self.attack()
 
@@ -113,7 +117,11 @@ class Skeleton(BaseEnemy):
                 except (PathNotFound, IndexError):
                     tile_to_move = self.support_pathfinding(player_tile)
             else:
-                [tile_to_move] = random.sample(get_adjacent_reachable_tiles(self.occupied_tile, self.world), 1)
+                adjacent_tiles = get_adjacent_reachable_tiles(self.occupied_tile, self.world)
+                if adjacent_tiles:
+                    [tile_to_move] = random.sample(adjacent_tiles, 1)
+                else:
+                    tile_to_move = self.occupied_tile
         else:
             if get_manhattan_distance(self.occupied_tile, player_tile) < 20:
                 self.memory = deque(self.find_best_tile_to_move(player_tile))
@@ -130,7 +138,7 @@ class Skeleton(BaseEnemy):
 class Demon(Skeleton):
     def __init__(self, world: World):
         super().__init__(world)
-        self.base_attack = 380
+        self.base_attack = 666
         self.base_defense = 180
         self.slow_factor = 0
 
@@ -172,7 +180,7 @@ class Demon(Skeleton):
 class CrazyFrog(BaseEnemy):
     def __init__(self, world: World):
         super().__init__(world)
-        self.base_attack = 500
+        self.base_attack = 1500
         self.base_defense = 1
 
     def attack(self):
