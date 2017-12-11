@@ -1,6 +1,6 @@
 import pygame
 
-from roguelike.enemy.meleeenemy import DumbMeleeEnemy, BoundedEnemy
+from roguelike.enemy.meleeenemy import Ghost, Skeleton, Demon
 from roguelike.model.camera import Camera
 from roguelike.model.player import Player
 from roguelike.model.world import World
@@ -68,8 +68,8 @@ class View:
                     if self.world.tiles[i][j].gold_dropped is not None:
                         Assets.GOLD.draw(self.main_surface, tile)
                     if self.world.tiles[i][j].occupied_by is not None:
-                        if self.world.tiles[i][j].occupied_by.__class__ == DumbMeleeEnemy:
-                            Assets.DUMB_ENEMY.draw(self.main_surface, tile)
+                        if self.world.tiles[i][j].occupied_by.__class__ == Ghost:
+                            Assets.ENEMY.draw(self.main_surface, tile)
                             self.hud.draw_character(self.world.tiles[i][j].occupied_by, tile)
                         if self.world.tiles[i][j].occupied_by.__class__ == Player:
                             if player.looking_direction == MovingDirections.UP:
@@ -80,8 +80,11 @@ class View:
                                 Assets.PLAYER_LEFT.draw(self.main_surface, tile)
                             elif player.looking_direction == MovingDirections.RIGHT:
                                 Assets.PLAYER_RIGHT.draw(self.main_surface, tile)
-                        if self.world.tiles[i][j].occupied_by.__class__ == BoundedEnemy:
-                            Assets.BOUNDED_ENEMY.draw(self.main_surface, tile)
+                        if self.world.tiles[i][j].occupied_by.__class__ == Skeleton:
+                            Assets.SKELETON.draw(self.main_surface, tile)
+                            self.hud.draw_character(self.world.tiles[i][j].occupied_by, tile)
+                        if self.world.tiles[i][j].occupied_by.__class__ == Demon:
+                            Assets.DEMON.draw(self.main_surface, tile)
                             self.hud.draw_character(self.world.tiles[i][j].occupied_by, tile)
                     if self.world.tiles[i][j].mark_as_attacked > 0:
                         Assets.ATTACK.draw(self.main_surface, tile)

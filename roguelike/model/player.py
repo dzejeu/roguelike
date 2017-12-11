@@ -1,7 +1,7 @@
 import pygame
 
 from roguelike.enemy import BaseEnemy
-from roguelike.enemy.meleeenemy import DumbMeleeEnemy
+from roguelike.enemy.meleeenemy import Ghost
 from roguelike.model.character import Character, MovingDirections
 from roguelike.model.world.world import World
 

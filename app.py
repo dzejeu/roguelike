@@ -6,7 +6,7 @@ import pygame
 from roguelike.controller import Controller
 from roguelike.controller import inputmap
 from roguelike.enemy import BaseEnemy
-from roguelike.enemy.meleeenemy import DumbMeleeEnemy, BoundedEnemy
+from roguelike.enemy.meleeenemy import Ghost, Skeleton, Demon
 from roguelike.model import World
 from roguelike.model.player import Player
 from roguelike.view import View
@@ -42,16 +42,22 @@ def next_level(world,player,controller):
         player.spawn()
         all_characters.append(player)
         for enemy in range(level.a_count[level_no]):
-            easy_enemy = DumbMeleeEnemy(world)
+            easy_enemy = Ghost(world)
             easy_enemy.spawn_random()
             enemies.append(easy_enemy)
             all_characters.append(easy_enemy)
 
         for enemy in range(level.c_count[level_no]):
-            smarter_enemy = BoundedEnemy(world)
+            smarter_enemy = Skeleton(world)
             smarter_enemy.spawn_random()
             enemies.append(smarter_enemy)
             all_characters.append(smarter_enemy)
+
+        for enemy in range(level.d_count[level_no]):
+            demon = Demon(world)
+            demon.spawn_random()
+            enemies.append(demon)
+            all_characters.append(demon)
 
         chase_enemy = pygame.USEREVENT + 1
         check_for_attack = pygame.USEREVENT + 2

@@ -12,10 +12,10 @@ from roguelike.utils.pathfinding import get_adjacent_reachable_tiles, A_star_pat
     get_manhattan_distance, get_euclidean_distance
 
 
-class DumbMeleeEnemy(BaseEnemy):
+class Ghost(BaseEnemy):
     def __init__(self, world: World):
         super().__init__(world)
-        self.base_attack = 40
+        self.base_attack = 150
 
     def find_best_tile_to_move(self, target_tile):
         reachable_tiles = get_adjacent_reachable_tiles(self.occupied_tile, self.world)
@@ -34,19 +34,23 @@ class DumbMeleeEnemy(BaseEnemy):
         return True
 
     def chase_player(self, player_tile):
-        best_tile = self.find_best_tile_to_move(player_tile)
-        self.move(best_tile.x, best_tile.y)
+        if get_manhattan_distance(self.occupied_tile, player_tile) < 35:
+            best_tile = self.find_best_tile_to_move(player_tile)
+            self.move(best_tile.x, best_tile.y)
+        else:
+            [tile_to_move] = random.sample(get_adjacent_reachable_tiles(self.occupied_tile, self.world), 1)
+            self.move(tile_to_move.x, tile_to_move.y)
         self.attack()
 
 
-class BoundedEnemy(BaseEnemy):
+class Skeleton(BaseEnemy):
     def __init__(self, world: World):
         self.counter = 0
         self.memory = deque()
         self._spawning_tile = None
         super().__init__(world)
         self.base_attack = 90
-        self.base_defense = 40
+        self.base_defense = 200
 
     def reduce_world(self, reduction):
         if self.occupied_tile.x - reduction >= 0:
@@ -108,7 +112,7 @@ class BoundedEnemy(BaseEnemy):
                 except (PathNotFound, IndexError):
                     tile_to_move = self.support_pathfinding(player_tile)
             else:
-                tile_to_move = self.support_pathfinding(player_tile)
+                [tile_to_move] = random.sample(get_adjacent_reachable_tiles(self.occupied_tile, self.world), 1)
         else:
             if get_manhattan_distance(self.occupied_tile, player_tile) < 20:
                 self.memory = deque(self.find_best_tile_to_move(player_tile))
@@ -118,6 +122,48 @@ class BoundedEnemy(BaseEnemy):
                     tile_to_move = self.support_pathfinding(player_tile)
             else:
                 tile_to_move = self.support_pathfinding(player_tile)
-        self.counter = (self.counter + 1) % 28
+        self.counter = (self.counter + 1) % 25
         self.move(tile_to_move.x, tile_to_move.y)
+        self.attack()
+
+class Demon(Skeleton):
+    def __init__(self, world: World):
+        super().__init__(world)
+        self.base_attack = 350
+        self.base_defense = 120
+        self.slow_factor = 0
+
+    def check_if_alived(self):
+        if self.hp == 0:
+            self.occupied_tile.leave()
+            gold = Gold(self.occupied_tile, random.randint(26, 45))
+            gold.drop()
+            return False
+        return True
+
+    def chase_player(self, player_tile):
+        if self.slow_factor == 0:
+            if self.counter != 0:
+                if get_manhattan_distance(self.occupied_tile, player_tile) < 20:
+                    try:
+                        tile_to_move = self.memory.pop()
+                    except (PathNotFound, IndexError):
+                        tile_to_move = self.support_pathfinding(player_tile)
+                else:
+                    tile_to_move = self.support_pathfinding(player_tile)
+            else:
+                if get_manhattan_distance(self.occupied_tile, player_tile) < 20:
+                    if self.memory:
+                        tile_to_move = self.memory.pop()
+                    else:
+                        self.memory = deque(self.find_best_tile_to_move(player_tile))
+                        if self.memory:
+                            tile_to_move = self.memory.pop()
+                        else:
+                            tile_to_move = self.support_pathfinding(player_tile)
+                else:
+                    tile_to_move = self.support_pathfinding(player_tile)
+            self.counter = (self.counter + 1) % 20
+            self.move(tile_to_move.x, tile_to_move.y)
+        self.slow_factor = (self.slow_factor + 1) % 2
         self.attack()
