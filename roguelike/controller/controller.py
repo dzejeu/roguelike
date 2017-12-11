@@ -103,5 +103,7 @@ class Controller:
         self.view.draw(self.player)
     def win_view(self):
         self.view.draw_win_text()
+    def lose_view(self):
+        self.view.draw_lose_text()
     def draw_text(self,t):
         self.view.draw_text(t)

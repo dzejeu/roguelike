@@ -113,11 +113,21 @@ class View:
         text = font.render("You've won!", False, (0, 255, 0))
         text_rect = text.get_rect(center=(self.screen_width / 2, self.screen_height / 2))
         self.main_surface.blit(text, text_rect)
+        pygame.display.update()
 
     def draw_text(self, t):
         font = pygame.font.SysFont('monospace', 24)
         text = font.render(t, False, (0, 0, 255))
         text_rect = text.get_rect(center=(self.screen_width / 2, self.screen_height / 2))
         self.main_surface.blit(text, text_rect)
+        pygame.display.update()
+        pygame.display.update()
+    def draw_lose_text(self):
+        self.main_surface.fill((0,0,0))
+        font = pygame.font.SysFont('monospace', 48)
+        text = font.render("YOU DIED!", False, (255, 0, 0))
+        text_rect = text.get_rect(center=(self.screen_width / 2, self.screen_height / 2))
+        self.main_surface.blit(text, text_rect)
+        pygame.display.update()
 
 

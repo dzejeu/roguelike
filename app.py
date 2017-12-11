@@ -34,7 +34,7 @@ def next_level(world,player,controller):
         level = Level(level_no)
         obj_no = level.obj_no
         room_no=level.room_count[level_no]
-        enemy_no=level.a_count[level_no]+level.b_count[level_no]+level.c_count[level_no]
+        enemy_no=2*level.a_count[level_no]+level.d_count[level_no]+level.c_count[level_no]
         all_characters=[]
         enemies=[]
         visited_rooms=[]
@@ -132,6 +132,15 @@ def main():
                 if event.type == pygame.KEYDOWN:
                     controller.process_input(event.key)
                 controller.win_view()
+        elif not player.check_if_alive():
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    quit()
+                if event.type == pygame.KEYDOWN:
+                    controller.process_input(event.key)
+                controller.lose_view()
+
         else:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -171,6 +180,8 @@ def main():
                             all_characters.remove(char)
                             if issubclass(char.__class__, BaseEnemy):
                                 enemies.remove(char)
+                if not player.check_if_alive():
+                    break
                 controller.update_view()
                 pygame.time.wait(20)
     pygame.quit()

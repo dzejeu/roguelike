@@ -45,7 +45,7 @@ class Player(Character):
         else:
             self.world.tiles[x][y].mark_as_attacked = 6
 
-    def check_if_alived(self):
-        if self.hp == 0:
-            pass    #TODO: loose screen
-
+    def check_if_alive(self):
+        if self.hp <= 0:
+            return False
+        return True
