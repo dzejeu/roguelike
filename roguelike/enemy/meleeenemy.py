@@ -167,3 +167,35 @@ class Demon(Skeleton):
             self.move(tile_to_move.x, tile_to_move.y)
         self.slow_factor = (self.slow_factor + 1) % 2
         self.attack()
+
+class CrazyFrog(BaseEnemy):
+    def __init__(self, world: World):
+        super().__init__(world)
+        self.base_attack = 400
+        self.base_defense = 1
+
+    def attack(self):
+        neighbours = get_adjacent_reachable_tiles(self.occupied_tile, self.world)
+        for neighbour in neighbours:
+            if neighbour.occupied_by.__class__ == player.Player:
+                neighbour.occupied_by.on_damage(self.base_attack)
+                for neighbour in neighbours:
+                    neighbour.mark_as_poisoned = 6
+                effect = pygame.mixer.Sound('sound/bite.ogg')
+                effect.set_volume(0.1)
+                effect.play()
+                self.hp = 0
+                break
+
+    def check_if_alived(self):
+        if self.hp == 0:
+            self.occupied_tile.leave()
+            gold = Gold(self.occupied_tile, random.randint(1, 3))
+            gold.drop()
+            return False
+        return True
+
+    def chase_player(self, player_tile):
+        [tile_to_move] = random.sample(get_adjacent_reachable_tiles(self.occupied_tile, self.world), 1)
+        self.move(tile_to_move.x, tile_to_move.y)
+        self.attack()

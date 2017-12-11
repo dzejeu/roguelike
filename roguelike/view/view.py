@@ -1,6 +1,6 @@
 import pygame
 
-from roguelike.enemy.meleeenemy import Ghost, Skeleton, Demon
+from roguelike.enemy.meleeenemy import Ghost, Skeleton, Demon, CrazyFrog
 from roguelike.model.camera import Camera
 from roguelike.model.player import Player
 from roguelike.model.world import World
@@ -69,7 +69,7 @@ class View:
                         Assets.GOLD.draw(self.main_surface, tile)
                     if self.world.tiles[i][j].occupied_by is not None:
                         if self.world.tiles[i][j].occupied_by.__class__ == Ghost:
-                            Assets.ENEMY.draw(self.main_surface, tile)
+                            Assets.GHOST.draw(self.main_surface, tile)
                             self.hud.draw_character(self.world.tiles[i][j].occupied_by, tile)
                         if self.world.tiles[i][j].occupied_by.__class__ == Player:
                             if player.looking_direction == MovingDirections.UP:
@@ -86,6 +86,9 @@ class View:
                         if self.world.tiles[i][j].occupied_by.__class__ == Demon:
                             Assets.DEMON.draw(self.main_surface, tile)
                             self.hud.draw_character(self.world.tiles[i][j].occupied_by, tile)
+                        if self.world.tiles[i][j].occupied_by.__class__ == CrazyFrog:
+                            Assets.FROG.draw(self.main_surface, tile)
+                            self.hud.draw_character(self.world.tiles[i][j].occupied_by, tile)
                     if self.world.tiles[i][j].mark_as_attacked > 0:
                         Assets.ATTACK.draw(self.main_surface, tile)
                         self.world.tiles[i][j].mark_as_attacked = max(
@@ -94,6 +97,10 @@ class View:
                         Assets.ENEMY_ATTACK.draw(self.main_surface, tile)
                         self.world.tiles[i][j].mark_as_attacked_by_enemy = max(
                             (self.world.tiles[i][j].mark_as_attacked_by_enemy - 1, 0))
+                    if self.world.tiles[i][j].mark_as_poisoned > 0:
+                        Assets.POISON.draw(self.main_surface, tile)
+                        self.world.tiles[i][j].mark_as_poisoned = max(
+                            (self.world.tiles[i][j].mark_as_poisoned - 1, 0))
 
         self.hud.draw()
         if self.menu is not None:

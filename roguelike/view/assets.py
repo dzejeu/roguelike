@@ -35,7 +35,7 @@ class Assets:
     PLAYER_BACK = Asset(pygame.image.load("assets/player_back.png"), (32, 42), (0, -10), alpha=True)
     PLAYER_LEFT = Asset(pygame.image.load("assets/player_left.png"), (32, 42), (0, -10), alpha=True)
     PLAYER_RIGHT = Asset(pygame.image.load("assets/player_right.png"), (32, 42), (0, -10), alpha=True)
-    ENEMY = Asset(pygame.image.load("assets/ghost.png"), alpha=True)
+    GHOST = Asset(pygame.image.load("assets/ghost.png"), alpha=True)
     SKELETON = Asset(pygame.image.load("assets/skeleton.png"), alpha=True)
     ROOM = Asset(pygame.image.load("assets/room.png"))
     CORRIDOR = Asset(pygame.image.load("assets/room.png"))
@@ -46,3 +46,6 @@ class Assets:
     SHIELD = Asset(pygame.image.load('assets/shield.png'), (16, 16), (10, 10), alpha=True)
     SWORD = Asset(pygame.image.load('assets/sword.png'), (16, 16), (10, 10), alpha=True)
     DEMON = Asset(pygame.image.load('assets/demon.png'), (56, 56), (-23, -30), alpha=True)
+    FROG = Asset(pygame.image.load('assets/frog.png'), alpha=True)
+    POISON = Asset(pygame.image.load('assets/poison.png'), alpha=True)
+

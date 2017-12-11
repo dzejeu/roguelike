@@ -6,6 +6,7 @@ class Tile:
     type = "V" #types of tiles V - void, R - room, C - corridor, W - wall, O - obstacle, easily expandable
     mark_as_attacked = 0
     mark_as_attacked_by_enemy = 0
+    mark_as_poisoned = 0
     gold_dropped = None     # jezeli gold lezy na tile'u to pod to pole bd podpiety obiekt golda
 
     def __init__(self):

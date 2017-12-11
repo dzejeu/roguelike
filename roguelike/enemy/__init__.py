@@ -33,3 +33,4 @@ class BaseEnemy(Character):
                 effect = pygame.mixer.Sound('sound/bite.ogg')
                 effect.set_volume(0.1)
                 effect.play()
+                break
