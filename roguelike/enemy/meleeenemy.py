@@ -130,8 +130,8 @@ class Skeleton(BaseEnemy):
 class Demon(Skeleton):
     def __init__(self, world: World):
         super().__init__(world)
-        self.base_attack = 350
-        self.base_defense = 120
+        self.base_attack = 380
+        self.base_defense = 180
         self.slow_factor = 0
 
     def check_if_alived(self):
@@ -172,7 +172,7 @@ class Demon(Skeleton):
 class CrazyFrog(BaseEnemy):
     def __init__(self, world: World):
         super().__init__(world)
-        self.base_attack = 400
+        self.base_attack = 500
         self.base_defense = 1
 
     def attack(self):
