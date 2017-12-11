@@ -5,6 +5,7 @@ from collections import deque
 import numpy
 
 from roguelike.enemy import BaseEnemy
+from roguelike.model import player
 from roguelike.model.money import Gold
 from roguelike.model.world.tile import Tile
 from roguelike.model.world.world import World
@@ -15,7 +16,7 @@ from roguelike.utils.pathfinding import get_adjacent_reachable_tiles, A_star_pat
 class Ghost(BaseEnemy):
     def __init__(self, world: World):
         super().__init__(world)
-        self.base_attack = 150
+        self.base_attack = 130
 
     def find_best_tile_to_move(self, target_tile):
         reachable_tiles = get_adjacent_reachable_tiles(self.occupied_tile, self.world)
@@ -50,7 +51,7 @@ class Skeleton(BaseEnemy):
         self._spawning_tile = None
         super().__init__(world)
         self.base_attack = 90
-        self.base_defense = 200
+        self.base_defense = 100
 
     def reduce_world(self, reduction):
         if self.occupied_tile.x - reduction >= 0:
@@ -181,9 +182,6 @@ class CrazyFrog(BaseEnemy):
                 neighbour.occupied_by.on_damage(self.base_attack)
                 for neighbour in neighbours:
                     neighbour.mark_as_poisoned = 6
-                effect = pygame.mixer.Sound('sound/bite.ogg')
-                effect.set_volume(0.1)
-                effect.play()
                 self.hp = 0
                 break
 
